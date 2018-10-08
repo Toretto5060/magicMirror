@@ -1,2 +1,0 @@
-# magicMirror
-魔镜
