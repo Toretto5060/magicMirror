@@ -4,6 +4,8 @@
 </template>
 
 <script>
+import {getWeather} from '../api/index.js';
+
 export default {
   name: 'index',
   data () {
@@ -12,11 +14,13 @@ export default {
     }
   },
   mounted() {
-  
+    this.getWeather();
   },
   methods:{
-    await(params) {
-      
+    getWeather(){
+       getWeather().then(body=>{
+         console.log(body)
+       })
     }
   }
 }
