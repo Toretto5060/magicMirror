@@ -18,3 +18,9 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+Vue.prototype.fuc = { //定义全局方法
+  newData(){
+    
+  }
+}
