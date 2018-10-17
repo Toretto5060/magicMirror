@@ -5,27 +5,33 @@
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <div class="left">
           <div class="week">
-            {{Week}},{{YTD}}
+            {{times.Week}},{{times.YTD}}
           </div>
-          <div class="lunar">{{lunarYTD}} {{yearsType}}</div>
+          <div class="lunar">{{times.lunarYTD}} {{times.yearsType}}</div>
           <div class="time">
-            <div class="hours">{{Time}}</div>
-            <div class="second">{{Seconds}}</div>
-            <div class="festival">{{festival}}</div>
+            <div class="hours">{{times.Time}}</div>
+            <div class="second">{{times.Seconds}}</div>
+            <div class="festival">{{times.festival}}</div>
           </div>
         </div>
       </el-col>
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <div class="right">
-          <div class="week">
-            {{Week}},{{YTD}}
+          <div class="nowPm">
+            <div class="pm">
+              <i class="iconfont icon-Fill"></i>{{weathers.pm}}
+            </div>
+            <div class='addr'> 
+              {{weathers.addr}}
+            </div>
           </div>
-          <div class="lunar">{{lunarYTD}} {{yearsType}}</div>
-          <div class="time">
-            <div class="hours">{{Time}}</div>
-            <div class="second">{{Seconds}}</div>
-            <div class="festival">{{festival}}</div>
+          <div class="todayWea">
+            <div class='weather'>
+              <i :class='weathers.fengIcon'></i>{{weathers.fengl}}{{weathers.fengx}}
+              <i :class='weathers.sunriseIcon'></i>{{weathers.sunrise}}
+            </div>
           </div>
+   
         </div>
       </el-col>
     </el-row>
@@ -39,26 +45,62 @@ export default {
   name: 'index',
   data () {
     return {
-      YTD:'----年--月--日',
-      yearsType:'',
-      lunarYTD:'',
-      Week:'---',
-      Time:'--:--',
-      Seconds:'--',
-      festival:''
+      times:{
+        YTD:'----年--月--日',
+        yearsType:'',
+        lunarYTD:'',
+        Week:'---',
+        Time:'--:--',
+        Seconds:'--',
+        hours:'',
+        minutes:'',
+        festival:''
+      },
+      weathers:{
+        pm:'',
+        pmIcon:'',
+        addr:'',
+        todayWea:'',
+        todayWeaIcon:'',
+        fengIcon:'',
+        fengl:'',
+        fengx:'',
+        sunriseIcon:'iconfont icon-richu',
+        sunrise:'',
+      }
+   
     }
   },
   watch:{
+    'times.hours':function(val){
+      if(val%4 == 0 && this.times.minutes == 20){
+        this.getWeather();
+      }
+    },
 
   },
   mounted() {
-    console.log(this.store)
     if(!localStorage.getItem('weather')){
       this.getWeather();
     }
-    this.getData(); 
+    this.getData();
+    this.setWeather();
+    this.getSystem();
   },
   methods:{
+    getSystem(){
+      navigator.getBattery().then(function(battery) {
+        //是否正在充电
+        console.log("正在充电? " + (battery.charging));
+        console.log("电量: " + battery.level * 100 + "%");
+        console.log("距离充满: " + battery.chargingTime + " 分钟");
+        console.log("电池已使用时间: " + battery.dischargingTime + " seconds");
+      });
+      console.log("网络是否连接"+navigator.onLine);
+
+
+
+    },
     getData(){
       let that = this;
       setInterval(function () {
@@ -103,9 +145,9 @@ export default {
         }
 
         if(years % 4 == 0 && (years % 100 != 0 || years % 400 == 0)){
-          that.yearsType = "闰年"
+          that.times.yearsType = "闰年"
         }else{
-          that.yearsType = "平年"
+          that.times.yearsType = "平年"
         }
         /*农历部分*/  
         function  lunar(yy,mm,dd) {
@@ -224,22 +266,44 @@ export default {
           if ((mm == 11) && (dd == 25)) return"圣诞节";  
           if ((mm == 9) && (dd == 17)) return"啦啦节";  
         }
-       
-
-        that.YTD = years+"年"+zero(month+1)+"月"+zero(date)+"日";
-        that.Week = todayWeek;
-        that.Time=zero(hours)+':'+zero(minutes);
-        that.Seconds=zero(seconds);
-        that.lunarYTD = lunar(years,month,date);
-        // that.festival=getFestival(month,date)
+      
+        that.times.YTD = years+"年"+zero(month+1)+"月"+zero(date)+"日";
+        that.times.Week = todayWeek;
+        that.times.Time=zero(hours)+':'+zero(minutes);
+        that.times.Seconds=zero(seconds);
+        that.times.lunarYTD = lunar(years,month,date);
+        that.times.hours = hours;
+        that.times.minutes=minutes;
+        that.times.festival=getFestival(month,date);
 
       },1000)
     },
     getWeather(){
-       getWeather().then(res=>{
-         console.log(res)
-         localStorage.setItem('weather',JSON.stringify(res))
-       })
+      getWeather().then(res=>{
+        if(res.status == 200){
+          localStorage.setItem('weather',JSON.stringify(res));
+          this.setWeather()
+        }else{
+          alert(res.message)
+        }
+      })
+    },
+    setWeather(){
+      let that = this;
+      if(localStorage.getItem('weather')){
+        let datas = JSON.parse(localStorage.getItem('weather'));
+        let todayWeather = datas.data.forecast[0];
+        that.weathers.pm = datas.data.quality+"("+datas.data.pm25+")"
+        that.weathers.addr = datas.cityInfo.city;
+        if(parseInt(todayWeather.fl)<5){  //判断风力图标
+          that.weathers.fengIcon = "iconfont icon-feng"
+        }else{
+          that.weathers.fengIcon = "iconfont icon-feng"
+        }
+        that.weathers.fengl = todayWeather.fl+todayWeather.fx;
+        that.weathers.sunrise=todayWeather.sunrise
+
+      }
     }
   }
 }
@@ -263,6 +327,7 @@ export default {
     .el-row{
       margin-top: 20px;
       padding-left: 20px;
+      padding-right: 20px;
       .left{
         .week{
           font-size: 25px;
@@ -295,6 +360,41 @@ export default {
             right: -100px;
             font-size: 20px;
             color:#999;
+          }
+        }
+      }
+      .right{
+        color:#999;
+        height:100%;
+        position:relative;
+        .nowPm{
+          width:100%; 
+          .pm{
+            width:100%;
+            text-align:right;
+            font-size:30px;
+            height:40px;
+            .icon-Fill:before{
+              font-size:32px;
+              color:#ccc;
+            }
+          }
+          .addr{
+            width:100%;
+            text-align:right;
+          }   
+
+        }
+        .todayWea{
+          margin-top:10px;
+          .weather{
+            width:100%;
+            font-size:25px;
+            text-align:right;
+            .icon-feng:before,.icon-richu{
+              font-size:32px;
+            }
+
           }
         }
       }

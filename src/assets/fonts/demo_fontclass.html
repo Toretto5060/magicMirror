@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>IconFont</title>
+    <link rel="stylesheet" href="demo.css">
+    <link rel="stylesheet" href="iconfont.css">
+</head>
+<body>
+    <div class="main markdown">
+        <h1>IconFont 图标</h1>
+        <ul class="icon_lists clear">
+            
+                <li>
+                <i class="icon iconfont icon-yintian"></i>
+                    <div class="name">阴天</div>
+                    <div class="fontclass">.icon-yintian</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-zhongyu"></i>
+                    <div class="name">中雨</div>
+                    <div class="fontclass">.icon-zhongyu</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-bingbao"></i>
+                    <div class="name">冰雹</div>
+                    <div class="fontclass">.icon-bingbao</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-qingtian"></i>
+                    <div class="name">晴天</div>
+                    <div class="fontclass">.icon-qingtian</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-leizhenyu"></i>
+                    <div class="name">雷阵雨</div>
+                    <div class="fontclass">.icon-leizhenyu</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-richu"></i>
+                    <div class="name">日出</div>
+                    <div class="fontclass">.icon-richu</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-icon-weather-wind"></i>
+                    <div class="name">大风</div>
+                    <div class="fontclass">.icon-icon-weather-wind</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-icon-weather-heavyrain"></i>
+                    <div class="name">大雨</div>
+                    <div class="fontclass">.icon-icon-weather-heavyrain</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-yujiaxue"></i>
+                    <div class="name">雨夹雪</div>
+                    <div class="fontclass">.icon-yujiaxue</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-22"></i>
+                    <div class="name">小雪</div>
+                    <div class="fontclass">.icon-22</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-bx"></i>
+                    <div class="name">暴雪</div>
+                    <div class="fontclass">.icon-bx</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-daxue"></i>
+                    <div class="name">大雪</div>
+                    <div class="fontclass">.icon-daxue</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-zhongxue"></i>
+                    <div class="name">中雪</div>
+                    <div class="fontclass">.icon-zhongxue</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-feng"></i>
+                    <div class="name">风</div>
+                    <div class="fontclass">.icon-feng</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-jinritoutiao"></i>
+                    <div class="name">今日头条</div>
+                    <div class="fontclass">.icon-jinritoutiao</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-xiaoyu"></i>
+                    <div class="name">小雨</div>
+                    <div class="fontclass">.icon-xiaoyu</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-pm"></i>
+                    <div class="name">pm2.5</div>
+                    <div class="fontclass">.icon-pm</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-taifeng"></i>
+                    <div class="name">台风</div>
+                    <div class="fontclass">.icon-taifeng</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-wangyiyunyinle"></i>
+                    <div class="name">网易云音乐</div>
+                    <div class="fontclass">.icon-wangyiyunyinle</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-baoyu"></i>
+                    <div class="name">暴雨</div>
+                    <div class="fontclass">.icon-baoyu</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-Fill"></i>
+                    <div class="name">PM2.5</div>
+                    <div class="fontclass">.icon-Fill</div>
+                </li>
+            
+        </ul>
+
+        <h2 id="font-class-">font-class引用</h2>
+        <hr>
+
+        <p>font-class是unicode使用方式的一种变种，主要是解决unicode书写不直观，语意不明确的问题。</p>
+        <p>与unicode使用方式相比，具有如下特点：</p>
+        <ul>
+        <li>兼容性良好，支持ie8+，及所有现代浏览器。</li>
+        <li>相比于unicode语意明确，书写更直观。可以很容易分辨这个icon是什么。</li>
+        <li>因为使用class来定义图标，所以当要替换图标时，只需要修改class里面的unicode引用。</li>
+        <li>不过因为本质上还是使用的字体，所以多色图标还是不支持的。</li>
+        </ul>
+        <p>使用步骤如下：</p>
+        <h3 id="-fontclass-">第一步：引入项目下面生成的fontclass代码：</h3>
+
+
+        <pre><code class="lang-js hljs javascript"><span class="hljs-comment">&lt;link rel="stylesheet" type="text/css" href="./iconfont.css"&gt;</span></code></pre>
+        <h3 id="-">第二步：挑选相应图标并获取类名，应用于页面：</h3>
+        <pre><code class="lang-css hljs">&lt;<span class="hljs-selector-tag">i</span> <span class="hljs-selector-tag">class</span>="<span class="hljs-selector-tag">iconfont</span> <span class="hljs-selector-tag">icon-xxx</span>"&gt;&lt;/<span class="hljs-selector-tag">i</span>&gt;</code></pre>
+        <blockquote>
+        <p>"iconfont"是你项目下的font-family。可以通过编辑项目查看，默认是"iconfont"。</p>
+        </blockquote>
+    </div>
+</body>
+</html>
