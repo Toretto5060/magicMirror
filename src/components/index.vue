@@ -72,8 +72,8 @@ export default {
     }
   },
   watch:{
-    'times.hours':function(val){
-      if(val%4 == 0 && this.times.minutes == 20){
+    'times.minutes':function(val){
+      if(val == 30){
         this.getWeather();
       }
     },
@@ -84,6 +84,7 @@ export default {
       this.getWeather();
     }
     this.getData();
+    this.getWeather();
     this.setWeather();
     this.getSystem();
   },
@@ -280,7 +281,7 @@ export default {
     },
     getWeather(){
       getWeather().then(res=>{
-        if(res.status == 200){
+        if(res.status == 0){
           localStorage.setItem('weather',JSON.stringify(res));
           this.setWeather()
         }else{
@@ -293,15 +294,35 @@ export default {
       if(localStorage.getItem('weather')){
         let datas = JSON.parse(localStorage.getItem('weather'));
         let todayWeather = datas.data.forecast[0];
-        that.weathers.pm = datas.data.quality+"("+datas.data.pm25+")"
-        that.weathers.addr = datas.cityInfo.city;
-        if(parseInt(todayWeather.fl)<5){  //判断风力图标
+
+        let apiType = "优"
+        if(datas.data.aqi>0 && datas.data.aqi<36){
+          apiType = "优"
+        }else if(datas.data.aqi>35 && datas.data.aqi<76 ){
+          apiType = "良"
+        }else if(datas.data.aqi>75 && datas.data.aqi<116 ){
+          apiType = "轻度污染"
+        }else if(datas.data.aqi>115 && datas.data.aqi<151 ){
+          apiType = "中度污染"
+        }else if(datas.data.aqi>150 && datas.data.aqi<251 ){
+          apiType = "重度污染"
+        }else{
+          apiType = "严重污染"
+        }
+        that.weathers.pm = apiType+"("+datas.data.aqi+")"
+        that.weathers.addr = datas.data.city;
+
+        todayWeather.windforce = "3级"
+        if(parseInt(todayWeather.windforce)<5){  //判断风力图标
           that.weathers.fengIcon = "iconfont icon-feng"
         }else{
           that.weathers.fengIcon = "iconfont icon-feng"
         }
-        that.weathers.fengl = todayWeather.fl+todayWeather.fx;
-        that.weathers.sunrise=todayWeather.sunrise
+        that.weathers.fengl = todayWeather.windforce+todayWeather.wind;
+
+        
+        
+        that.weathers.sunrise="06:59"
 
       }
     }
@@ -391,7 +412,7 @@ export default {
             width:100%;
             font-size:25px;
             text-align:right;
-            .icon-feng:before,.icon-richu{
+            .icon-feng,.icon-richu{
               font-size:32px;
             }
 
