@@ -53,30 +53,39 @@
 
           <div class="future">
             <el-table
+              :border=false
               :data="tableData"
               :show-header=false
-              style="width: 100%">
+              style="width: 100%"
+              >
               <el-table-column
                 prop="date"
                 label="星期日"
                 width="70"
+                align="center"
                 >
               </el-table-column>
               <el-table-column
                 prop="pic"
                 label="图片"
                 width="70"
+                align="center"
+
                 >
               </el-table-column>
               <el-table-column
                 prop="max"
                 label="15℃"
-                width="65">
+                width="65"
+                align="center"
+                >
               </el-table-column>
               <el-table-column
                 prop="min"
                 label="30℃"
-                width="65">
+                width="65"
+                align="center"
+                >
               </el-table-column>
             </el-table>
           </div>
@@ -125,7 +134,7 @@ export default {
       },
       tableData:[
         {
-          date:'星期天',
+          date:'周日',
           pic:'晴',
           max:'30',
           min:'18'
@@ -419,7 +428,7 @@ export default {
     left: 0;
     background-color: #000;
     color: #fff;
-    font-family:"黑体";
+    // font-family:"楷体";
     .system{
       width: 100%;
       height: 50px;
@@ -490,7 +499,7 @@ export default {
             color:#999;
             position: absolute;
             top: 7px;
-            right: 0px;
+            right: -5px;
           }
           .festival{
             width: 80px;
@@ -588,16 +597,17 @@ export default {
 <style lang="less">
     .future{
       width:100%;
-      // .el-table th{
-      //   background-color: rgba(255,255,255,0)
+      //  .el-table__body,.el-table__row,.el-table__body-wrapper,.is-scrolling-none{
+      //   background:black;
+      //   color:#999; 
+      //   font-size:15px;
       // }
-      // .el-table tr{
-      //   background-color: rgba(255,255,255,0)          
-      // }
-    }
-    #app{
-      .el-table{
-        // opacity: 0.5;
+      .el-table__body,.el-table__body-wrapper,.el-table__row,.el-table__body td,.el-table__body th{
+        border:none;
+        background:black;
+        color:#999;
       }
+      
     }
+
 </style>
