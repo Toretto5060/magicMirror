@@ -1,6 +1,16 @@
 <template>
   <div class="hello">
-    <div class="system"></div>
+    <div class="system">
+      <div class="posi-rit">
+        <div class="wifi">
+          <i :class="system.wifi"></i>
+        </div>
+        <div class="battery">
+          <i class="iconfont icon-iconset0248"></i><i v-if="system.ifCharg" class="iconfont icon-icon-test"></i><div>{{system.batteryNums}}</div>
+          <div v-if="system.isOver" class="over"></div>
+        </div>
+      </div>
+    </div>
     <el-row>
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <div class="left">
@@ -27,9 +37,18 @@
           </div>
           <div class="todayWea">
             <div class='weather'>
-              <i :class='weathers.fengIcon'></i>{{weathers.fengl}}{{weathers.fengx}}
+              <div class="feng">
+                <i :class='weathers.fengIcon'></i>{{weathers.fengl}}<span>{{weathers.fengx}}</span>
+              </div>
               <i :class='weathers.sunriseIcon'></i>{{weathers.sunrise}}
             </div>
+            <div class="dayWeather">
+              <i :class="weathers.todayWeaIcon"></i>{{weathers.todayWea}}°
+            </div>
+          </div>
+
+          <div class="future">
+
           </div>
    
         </div>
@@ -45,6 +64,12 @@ export default {
   name: 'index',
   data () {
     return {
+      system:{
+        wifi:"",
+        batteryNums:"0%",
+        ifCharg:false,
+        isOver:false
+      },
       times:{
         YTD:'----年--月--日',
         yearsType:'',
@@ -60,13 +85,13 @@ export default {
         pm:'',
         pmIcon:'',
         addr:'',
-        todayWea:'',
-        todayWeaIcon:'',
         fengIcon:'',
         fengl:'',
         fengx:'',
         sunriseIcon:'iconfont icon-richu',
         sunrise:'',
+        todayWeaIcon:'',
+        todayWea:'',
       }
    
     }
@@ -86,25 +111,34 @@ export default {
     this.getData();
     this.getWeather();
     this.setWeather();
-    this.getSystem();
   },
   methods:{
-    getSystem(){
+    getSystem(){   //获取系统信息
+      let that = this;
       navigator.getBattery().then(function(battery) {
+        that.system.batteryNums =  battery.level * 100 + "%"  //当前点电量
+        if(battery.charging == true){
+          that.system.ifCharg = true;
+          that.system.isOver = true
+        }else{
+          
+        }
         //是否正在充电
-        console.log("正在充电? " + (battery.charging));
-        console.log("电量: " + battery.level * 100 + "%");
-        console.log("距离充满: " + battery.chargingTime + " 分钟");
-        console.log("电池已使用时间: " + battery.dischargingTime + " seconds");
+        // console.log("正在充电? " + (battery.charging));
+        // console.log("电量: " + battery.level * 100 + "%");
+        // console.log("距离充满: " + battery.chargingTime + " 分钟");
+        // console.log("电池已使用时间: " + battery.dischargingTime + " seconds");
       });
-      console.log("网络是否连接"+navigator.onLine);
-
-
-
+      if(navigator.onLine == true){  //网络是否连接
+        that.system.wifi="iconfont icon-WIFIwofi"
+      }else{
+        that.system.wifi="iconfont icon-wifiweilianjie"
+      }
     },
-    getData(){
+    getData(){  //获取时间
       let that = this;
       setInterval(function () {
+        that.getSystem();
         let nowDate = new Date;
         let years= nowDate.getFullYear();    //获取完整的年份(4位,1970-????)
         let month=  nowDate.getMonth();       //获取当前月份(0-11,0代表1月)
@@ -279,7 +313,7 @@ export default {
 
       },1000)
     },
-    getWeather(){
+    getWeather(){  //获取天气
       getWeather().then(res=>{
         if(res.status == 0){
           localStorage.setItem('weather',JSON.stringify(res));
@@ -289,7 +323,7 @@ export default {
         }
       })
     },
-    setWeather(){
+    setWeather(){  //设置天气
       let that = this;
       if(localStorage.getItem('weather')){
         let datas = JSON.parse(localStorage.getItem('weather'));
@@ -309,20 +343,26 @@ export default {
         }else{
           apiType = "严重污染"
         }
-        that.weathers.pm = apiType+"("+datas.data.aqi+")"
-        that.weathers.addr = datas.data.city;
-
-        todayWeather.windforce = "3级"
-        if(parseInt(todayWeather.windforce)<5){  //判断风力图标
+        that.weathers.pm = apiType+"("+datas.data.aqi+")"  //pm2.5数据
+        that.weathers.addr = datas.data.city;              //城市
+        todayWeather.windforce=todayWeather.windforce.replace(/[^0-9]/ig, ""); //提取风力数字
+        if(todayWeather.windforce<6){  //判断风力图标
           that.weathers.fengIcon = "iconfont icon-feng"
+        }else if(todayWeather.windforce > 5 && todayWeather.windforce<12){
+          that.weathers.fengIcon = "iconfont icon-icon-weather-wind"
         }else{
-          that.weathers.fengIcon = "iconfont icon-feng"
+          that.weathers.fengIcon = "iconfont icon-taifeng"
         }
-        that.weathers.fengl = todayWeather.windforce+todayWeather.wind;
+        that.weathers.fengl = todayWeather.windforce;  //风力
+        that.weathers.fengx = todayWeather.wind;  //风向
+        that.weathers.sunrise="06:59"    //日出时间
 
-        
-        
-        that.weathers.sunrise="06:59"
+        if(todayWeather.weather == "晴"){
+          that.weathers.todayWeaIcon="iconfont icon-qingtian"
+        }else if(todayWeather.weather.indexOf("多云")>-1){
+          that.weathers.todayWeaIcon="iconfont icon-duoyun"
+        }
+        that.weathers.todayWea=datas.data.temp
 
       }
     }
@@ -344,6 +384,47 @@ export default {
     .system{
       width: 100%;
       height: 50px;
+      .posi-rit{
+        width: 110px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        .iconfont{
+          font-size: 20px;
+        }
+        div{
+          display: inline-block;
+        }
+        .wifi{
+          width: 20px;
+          height: 23px;
+        }
+        .battery{
+          height: 40px;
+          line-height: 40px;
+          .icon-iconset0248{
+            font-size: 22px;
+          }
+          .icon-icon-test{
+            font-size: 13px;
+            position: absolute;
+            top: 1px;
+          }
+          div{
+            position: absolute;
+            left: 60px;
+            top: -1px;
+          }
+          .over{
+            width: 17px;
+            height: 7px;
+            background: greenyellow;
+            position: absolute;
+            left: 30px;
+            top: 16px;
+          }
+        }
+      }
     }
     .el-row{
       margin-top: 20px;
@@ -393,7 +474,7 @@ export default {
           .pm{
             width:100%;
             text-align:right;
-            font-size:30px;
+            font-size:28px;
             height:40px;
             .icon-Fill:before{
               font-size:32px;
@@ -403,19 +484,36 @@ export default {
           .addr{
             width:100%;
             text-align:right;
+            font-size: 18px;
           }   
 
         }
         .todayWea{
-          margin-top:10px;
+          margin-top:20px;
           .weather{
             width:100%;
-            font-size:25px;
+            font-size:30px;
             text-align:right;
-            .icon-feng,.icon-richu{
+            .icon-feng,.icon-richu,.icon-icon-weather-wind{
               font-size:32px;
             }
+            .feng{
+              display: inline-block;
+              span{
+                display: inline-block;
+                font-size: 20px;
+              }
+            }
 
+          }
+        }
+        .dayWeather{
+          text-align: right;
+          font-size: 50px;
+          color: #fff;
+          .iconfont{
+            font-size: 50px;
+            color: #ccc;
           }
         }
       }
