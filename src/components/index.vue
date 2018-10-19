@@ -44,11 +44,41 @@
             </div>
             <div class="dayWeather">
               <i :class="weathers.todayWeaIcon"></i>{{weathers.todayWea}}°
+
+              <div class="solid">
+                <span>WEATHER FORECAST FOR FOUR DAYS</span>
+              </div>
             </div>
           </div>
 
           <div class="future">
-
+            <el-table
+              :data="tableData"
+              :show-header=false
+              style="width: 100%">
+              <el-table-column
+                prop="date"
+                label="星期日"
+                width="70"
+                >
+              </el-table-column>
+              <el-table-column
+                prop="pic"
+                label="图片"
+                width="70"
+                >
+              </el-table-column>
+              <el-table-column
+                prop="max"
+                label="15℃"
+                width="65">
+              </el-table-column>
+              <el-table-column
+                prop="min"
+                label="30℃"
+                width="65">
+              </el-table-column>
+            </el-table>
           </div>
    
         </div>
@@ -92,7 +122,15 @@ export default {
         sunrise:'',
         todayWeaIcon:'',
         todayWea:'',
-      }
+      },
+      tableData:[
+        {
+          date:'星期天',
+          pic:'晴',
+          max:'30',
+          min:'18'
+        } 
+      ]
    
     }
   },
@@ -108,6 +146,7 @@ export default {
     if(!localStorage.getItem('weather')){
       this.getWeather();
     }
+    
     this.getData();
     this.getWeather();
     this.setWeather();
@@ -121,7 +160,7 @@ export default {
           that.system.ifCharg = true;
           that.system.isOver = true
         }else{
-          
+
         }
         //是否正在充电
         // console.log("正在充电? " + (battery.charging));
@@ -511,13 +550,54 @@ export default {
           text-align: right;
           font-size: 50px;
           color: #fff;
+          // border-bottom: 1px solid #999;
           .iconfont{
             font-size: 50px;
             color: #ccc;
           }
+          .solid{
+            width: 90%;
+            height: 37px;
+            font-size: 12px;
+            color:#999;
+            float: right;
+            position: relative;
+            border-bottom: 1px solid #999;
+            span{
+              display:block;
+              height: 21px;
+              position: absolute;
+              bottom: 0;
+              right: 0;
+            }
+          }
+        }
+        .future{
+          // .el-table{
+          //   background-color: rgba(0,0,0,0.5)
+          //   // opacity:0;
+          // }
+
         }
       }
     }
   }
   
+</style>
+
+<style lang="less">
+    .future{
+      width:100%;
+      // .el-table th{
+      //   background-color: rgba(255,255,255,0)
+      // }
+      // .el-table tr{
+      //   background-color: rgba(255,255,255,0)          
+      // }
+    }
+    #app{
+      .el-table{
+        // opacity: 0.5;
+      }
+    }
 </style>
