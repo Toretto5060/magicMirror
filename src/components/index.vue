@@ -52,42 +52,14 @@
           </div>
 
           <div class="future">
-            <el-table
-              :border=false
-              :data="tableData"
-              :show-header=false
-              style="width: 100%"
-              >
-              <el-table-column
-                prop="date"
-                label="星期日"
-                width="70"
-                align="center"
-                >
-              </el-table-column>
-              <el-table-column
-                prop="pic"
-                label="图片"
-                width="70"
-                align="center"
-
-                >
-              </el-table-column>
-              <el-table-column
-                prop="max"
-                label="15℃"
-                width="65"
-                align="center"
-                >
-              </el-table-column>
-              <el-table-column
-                prop="min"
-                label="30℃"
-                width="65"
-                align="center"
-                >
-              </el-table-column>
-            </el-table>
+            <ul>
+              <li v-for="val in tableData">
+                <span class="date">{{val.date}}</span>
+                <i :class="val.pic"></i>
+                <span>{{val.max}}℃</span>
+                <span>{{val.min}}℃</span>
+              </li>
+            </ul>
           </div>
    
         </div>
@@ -138,7 +110,7 @@ export default {
           pic:'晴',
           max:'30',
           min:'18'
-        } 
+        }
       ]
    
     }
@@ -371,6 +343,41 @@ export default {
         }
       })
     },
+    setIcon(type){
+      if(type == "晴"){
+        return type = "iconfont icon-qingtian"
+      }else if(type == "阴"){
+        return type = "iconfont icon-yintian"
+      }else if(type == "多云"){
+        return type = "iconfont icon-duoyun"
+      }else if(type == "小雨" || type.indexOf('转小雨')>-1){
+        return type = "iconfont icon-xiaoyu"
+      }else if(type == "中雨" || type.indexOf('转中雨')>-1){
+        return type = "iconfont icon-zhongyu"
+      }else if(type == "大雨" || type.indexOf('转中雨')>-1){
+        return type = "iconfont icon-icon-weather-heavyrain"
+      }else if(type == "暴雨" || type.indexOf('转暴雨')>-1){
+        return type = "iconfont icon-baoyudaodabaoyu"
+      }else if(type == "阵雨" || type.indexOf('转阵雨')>-1){
+        return type = "iconfont icon-tianqizitiku20"
+      }else if(type == "雷阵雨" || type.indexOf('转雷阵雨')>-1){
+        return type = "iconfont icon-leizhenyu"
+      }else if(type == "冰雹" || type.indexOf('转冰雹')>-1){
+        return type = "iconfont icon-bingbao"
+      }else if(type == "小雪" || type.indexOf('转小雪')>-1){
+        return type = "iconfont icon-22"
+      }else if(type == "中雪" || type.indexOf('转中雪')>-1){
+        return type = "iconfont icon-zhongxue"
+      }else if(type == "大雪"  || type.indexOf('转大雪')>-1){
+        return type = "iconfont icon-daxue"
+      }else if(type == "暴雪" || type.indexOf('转暴雪')>-1){
+        return type = "iconfont icon-bx"
+      }else if(type == "雨夹雪" || type.indexOf('转雨夹雪')>-1){
+        return type = "iconfont icon-yujiaxue"
+      }else{
+        return type = type;
+      }
+    },  //设置天气图片
     setWeather(){  //设置天气
       let that = this;
       if(localStorage.getItem('weather')){
@@ -404,13 +411,28 @@ export default {
         that.weathers.fengl = todayWeather.windforce;  //风力
         that.weathers.fengx = todayWeather.wind;  //风向
         that.weathers.sunrise="06:59"    //日出时间
-
-        if(todayWeather.weather == "晴"){
-          that.weathers.todayWeaIcon="iconfont icon-qingtian"
-        }else if(todayWeather.weather.indexOf("多云")>-1){
-          that.weathers.todayWeaIcon="iconfont icon-duoyun"
-        }
+        //当天天气图标及温度
+        that.weathers.todayWeaIcon = that.setIcon(todayWeather.weather);
         that.weathers.todayWea=datas.data.temp
+
+       //设置未来4天天气
+       that.tableData=[];
+       for(var j=1;j < datas.data.forecast.length;j++){
+         var weatherData={
+            date:'',
+            pic:'',
+            max:'',
+            min:''
+          }
+         weatherData.date=datas.data.forecast[j].date;
+         weatherData.pic=that.setIcon(datas.data.forecast[j].weather);
+         weatherData.max=datas.data.forecast[j].temphigh;
+         weatherData.min=datas.data.forecast[j].templow;
+         that.tableData.push(weatherData)
+       }
+
+
+        
 
       }
     }
@@ -428,10 +450,10 @@ export default {
     left: 0;
     background-color: #000;
     color: #fff;
-    // font-family:"楷体";
+    font-family:"黑体";
     .system{
       width: 100%;
-      height: 50px;
+      height: 30px;
       .posi-rit{
         width: 110px;
         position: absolute;
@@ -475,7 +497,7 @@ export default {
       }
     }
     .el-row{
-      margin-top: 20px;
+      margin-top: 5px;
       padding-left: 20px;
       padding-right: 20px;
       .left{
@@ -537,12 +559,12 @@ export default {
 
         }
         .todayWea{
-          margin-top:20px;
+          margin-top:8px;
           .weather{
             width:100%;
             font-size:30px;
             text-align:right;
-            .icon-feng,.icon-richu,.icon-icon-weather-wind{
+            .icon-feng,.icon-richu,.icon-icon-weather-wind,.icon-taifeng{
               font-size:32px;
             }
             .feng{
@@ -582,6 +604,33 @@ export default {
           }
         }
         .future{
+          ul{
+            width: 100%;
+            height: 100%;
+            margin-top: 40px;
+            li{
+              list-style: none;
+              width: 100%;
+              height: 30px;
+              span{
+                display:inline-block;
+                width: 16%;
+                height: 30px;
+                line-height: 30px;
+                text-align: right;
+              }
+              .date{
+                width: 42%;
+              }
+              .iconfont{
+                display: inline-block;
+                width: 48px;
+                text-align: right;
+                font-size: 20px;
+                color:#999;
+              }
+            }
+          }
           // .el-table{
           //   background-color: rgba(0,0,0,0.5)
           //   // opacity:0;
