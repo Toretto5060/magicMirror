@@ -401,13 +401,26 @@ export default {
         that.weathers.pm = apiType+"("+datas.data.aqi+")"  //pm2.5数据
         that.weathers.addr = datas.data.city;              //城市
         todayWeather.windforce=todayWeather.windforce.replace(/[^0-9]/ig, ""); //提取风力数字
-        if(todayWeather.windforce<6){  //判断风力图标
+
+        //判断风力图标
+        if(todayWeather.windforce.length>1){
+          todayWeather.windforce=todayWeather.windforce[0]+"-"+todayWeather.windforce[1]
+          if(todayWeather.windforce[1]< "6"){  
           that.weathers.fengIcon = "iconfont icon-feng"
-        }else if(todayWeather.windforce > 5 && todayWeather.windforce<12){
-          that.weathers.fengIcon = "iconfont icon-icon-weather-wind"
+          }else if(todayWeather.windforce[1] > "5" && todayWeather.windforce[1]<"12"){
+            that.weathers.fengIcon = "iconfont icon-icon-weather-wind"
+          }else{
+            that.weathers.fengIcon = "iconfont icon-taifeng"
+          }
         }else{
-          that.weathers.fengIcon = "iconfont icon-taifeng"
-        }
+          if(todayWeather.windforce<6){  //判断风力图标
+          that.weathers.fengIcon = "iconfont icon-feng"
+          }else if(todayWeather.windforce > 5 && todayWeather.windforce<12){
+            that.weathers.fengIcon = "iconfont icon-icon-weather-wind"
+          }else{
+            that.weathers.fengIcon = "iconfont icon-taifeng"
+          }
+        } 
         that.weathers.fengl = todayWeather.windforce;  //风力
         that.weathers.fengx = todayWeather.wind;  //风向
         that.weathers.sunrise="06:59"    //日出时间
