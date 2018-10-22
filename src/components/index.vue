@@ -27,7 +27,9 @@
           <div class="play">
             <ul>
               <li v-for="icon in paly">
-                <i :class="icon.appIcon"></i>
+                <router-link :to="icon.roleTo">
+                   <i :class="icon.appIcon"></i>
+                </router-link>
               </li>
             </ul>
           </div>
@@ -587,7 +589,11 @@ export default {
               text-align: center;
               list-style: none;
               width: 50%;
+              a{
+                text-decoration : none;
+              }
               .iconfont{
+                color:#fff;
                 font-size: 45px;
               }
             }
