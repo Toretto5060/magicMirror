@@ -424,15 +424,12 @@ export default {
             max:'',
             min:''
           }
-         weatherData.date=datas.data.forecast[j].date;
+         weatherData.date="周"+datas.data.forecast[j].date.split("星期")[1];
          weatherData.pic=that.setIcon(datas.data.forecast[j].weather);
          weatherData.max=datas.data.forecast[j].temphigh;
          weatherData.min=datas.data.forecast[j].templow;
          that.tableData.push(weatherData)
        }
-
-
-        
 
       }
     }
@@ -587,7 +584,7 @@ export default {
             color: #ccc;
           }
           .solid{
-            width: 90%;
+            width: 78%;
             height: 37px;
             font-size: 12px;
             color:#999;
@@ -605,29 +602,30 @@ export default {
         }
         .future{
           ul{
-            width: 100%;
+            width: 80%;
             height: 100%;
-            margin-top: 40px;
+            margin-top: 5px;
+            float: right;
             li{
               list-style: none;
               width: 100%;
               height: 30px;
               span{
                 display:inline-block;
-                width: 16%;
+                width: 24%;
                 height: 30px;
                 line-height: 30px;
                 text-align: right;
               }
-              .date{
-                width: 42%;
-              }
+              // .date{
+              //   width: 42%;
+              // }
               .iconfont{
                 display: inline-block;
-                width: 48px;
+                width: 38px;
                 text-align: right;
                 font-size: 20px;
-                color:#999;
+                color:#ccc;
               }
             }
           }
