@@ -631,32 +631,11 @@ export default {
               }
             }
           }
-          // .el-table{
-          //   background-color: rgba(0,0,0,0.5)
-          //   // opacity:0;
-          // }
+
 
         }
       }
     }
   }
   
-</style>
-
-<style lang="less">
-    .future{
-      width:100%;
-      //  .el-table__body,.el-table__row,.el-table__body-wrapper,.is-scrolling-none{
-      //   background:black;
-      //   color:#999; 
-      //   font-size:15px;
-      // }
-      .el-table__body,.el-table__body-wrapper,.el-table__row,.el-table__body td,.el-table__body th{
-        border:none;
-        background:black;
-        color:#999;
-      }
-      
-    }
-
 </style>
