@@ -23,6 +23,14 @@
             <div class="second">{{times.Seconds}}</div>
             <div class="festival">{{times.festival}}</div>
           </div>
+
+          <div class="play">
+            <ul>
+              <li v-for="icon in paly">
+                <i :class="icon.appIcon"></i>
+              </li>
+            </ul>
+          </div>
         </div>
       </el-col>
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
@@ -65,6 +73,10 @@
         </div>
       </el-col>
     </el-row>
+    
+    <div class="life">
+      {{life}}
+    </div>
   </div>
 </template>
 
@@ -110,6 +122,25 @@ export default {
           pic:'晴',
           max:'30',
           min:'18'
+        }
+      ],
+      life:'啦啦啦',
+      paly:[
+        {
+          appIcon:'iconfont icon-wangyiyunyinle',
+          roleTo:''
+        },
+        {
+          appIcon:'iconfont icon-jinritoutiao',
+          roleTo:''
+        },
+        {
+          appIcon:'',
+          roleTo:''
+        },
+        {
+          appIcon:'',
+          roleTo:''
         }
       ]
    
@@ -343,7 +374,7 @@ export default {
         }
       })
     },
-    setIcon(type){
+    setIcon(type){  //设置天气图片
       if(type == "晴"){
         return type = "iconfont icon-qingtian"
       }else if(type == "阴"){
@@ -377,7 +408,7 @@ export default {
       }else{
         return type = type;
       }
-    },  //设置天气图片
+    },  
     setWeather(){  //设置天气
       let that = this;
       if(localStorage.getItem('weather')){
@@ -443,6 +474,8 @@ export default {
          weatherData.min=datas.data.forecast[j].templow;
          that.tableData.push(weatherData)
        }
+       that.life=datas.data.life;
+
 
       }
     }
@@ -512,7 +545,7 @@ export default {
       padding-right: 20px;
       .left{
         .week{
-          font-size: 25px;
+          font-size: 24px;
           height: 30px;
           color:#999;
         }
@@ -543,6 +576,23 @@ export default {
             font-size: 20px;
             color:#999;
           }
+        
+        }
+        .play{
+          ul{
+            width: 60%;
+            margin-top: 40px;
+            li{
+              display: inline-block;
+              text-align: center;
+              list-style: none;
+              width: 50%;
+              .iconfont{
+                font-size: 45px;
+              }
+            }
+          }
+         
         }
       }
       .right{
@@ -646,6 +696,14 @@ export default {
 
         }
       }
+    }
+    .life{
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      height: 50px;
+      font-size: 25px;
+      white-space:normal;
     }
   }
   
