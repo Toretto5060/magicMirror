@@ -1,16 +1,6 @@
 <template>
   <div class="hello">
-    <div class="system">
-      <div class="posi-rit">
-        <div class="wifi">
-          <i :class="system.wifi"></i>
-        </div>
-        <div class="battery">
-          <i class="iconfont icon-iconset0248"></i><i v-if="system.ifCharg" class="iconfont icon-icon-test"></i><div>{{system.batteryNums}}</div>
-          <div v-if="system.isOver" class="over"></div>
-        </div>
-      </div>
-    </div>
+ 
     <el-row>
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <div class="left">
@@ -89,12 +79,6 @@ export default {
   name: 'index',
   data () {
     return {
-      system:{
-        wifi:"",
-        batteryNums:"0%",
-        ifCharg:false,
-        isOver:false
-      },
       times:{
         YTD:'----年--月--日',
         yearsType:'',
@@ -130,7 +114,7 @@ export default {
       paly:[
         {
           appIcon:'iconfont icon-wangyiyunyinle',
-          roleTo:''
+          roleTo:'music'
         },
         {
           appIcon:'iconfont icon-jinritoutiao',
@@ -166,32 +150,9 @@ export default {
     this.setWeather();
   },
   methods:{
-    getSystem(){   //获取系统信息
-      let that = this;
-      navigator.getBattery().then(function(battery) {
-        that.system.batteryNums =  battery.level * 100 + "%"  //当前点电量
-        if(battery.charging == true){
-          that.system.ifCharg = true;
-          that.system.isOver = true
-        }else{
-
-        }
-        //是否正在充电
-        // console.log("正在充电? " + (battery.charging));
-        // console.log("电量: " + battery.level * 100 + "%");
-        // console.log("距离充满: " + battery.chargingTime + " 分钟");
-        // console.log("电池已使用时间: " + battery.dischargingTime + " seconds");
-      });
-      if(navigator.onLine == true){  //网络是否连接
-        that.system.wifi="iconfont icon-WIFIwofi"
-      }else{
-        that.system.wifi="iconfont icon-wifiweilianjie"
-      }
-    },
     getData(){  //获取时间
       let that = this;
       setInterval(function () {
-        that.getSystem();
         let nowDate = new Date;
         let years= nowDate.getFullYear();    //获取完整的年份(4位,1970-????)
         let month=  nowDate.getMonth();       //获取当前月份(0-11,0代表1月)
@@ -496,51 +457,6 @@ export default {
     background-color: #000;
     color: #fff;
     // font-family:"黑体";
-    .system{
-      width: 100%;
-      height: .7rem;
-      .posi-rit{
-        width: 2.04rem;
-        position: absolute;
-        top: 0;
-        right: 0;
-        .iconfont{
-          font-size: .37rem;
-        }
-        div{
-          display: inline-block;
-        }
-        .wifi{
-          width: .37rem;
-          height: .43rem;
-        }
-        .battery{
-          height: .74rem;
-          line-height: .74rem;
-          .icon-iconset0248{
-            font-size: .41rem;
-          }
-          .icon-icon-test{
-            font-size: .24rem;
-            position: absolute;
-            top: .02rem;
-          }
-          div{
-            position: absolute;
-            left: 1.11rem;
-            top: -.02rem;
-          }
-          .over{
-            width: .29rem;
-            height: .136rem;
-            background: greenyellow;
-            position: absolute;
-            left: .49rem;
-            top: .28rem;
-          }
-        }
-      }
-    }
     .el-row{
       margin-top: .1rem;
       padding-left: .42rem;
