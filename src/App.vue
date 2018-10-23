@@ -42,8 +42,11 @@ body,html,*{
   margin: 0;
   padding: 0;
 }
+html{
+  font-size: 62.5%; /*10 ÷ 16 × 100% = 62.5%*/
+}
 #app {
-  font-family:"草书";//楷体
+  // font-family:"草书";//楷体
   width: 100%;
   height: 100%;
   .await{

@@ -495,7 +495,7 @@ export default {
     left: 0;
     background-color: #000;
     color: #fff;
-    font-family:"黑体";
+    // font-family:"黑体";
     .system{
       width: 100%;
       height: 30px;
@@ -542,59 +542,60 @@ export default {
       }
     }
     .el-row{
-      margin-top: 5px;
-      padding-left: 20px;
-      padding-right: 20px;
+      margin-top: .1rem;
+      padding-left: .42rem;
+      padding-right: .42rem;
       .left{
         .week{
-          font-size: 24px;
-          height: 30px;
+          font-size: .4rem;
+          height: .56rem;
           color:#999;
         }
         .lunar{
-          font-size: 20px;
-          height: 30px;
-          line-height: 30px;
+          font-size: .37rem;
+          height: .56rem;
+          line-height: .56rem;
           color:#999;
         }
         .time{
-          width: 155px;
-          font-size: 50px;
+          width: 2.87rem;
+          font-size: .93rem;
           position: relative;
           .second{
-            font-size: 25px;
+            font-size: .46rem;
             color:#999;
             position: absolute;
-            top: 7px;
-            right: -5px;
+            top: .13rem;
+            right: -.09rem ;
           }
           .festival{
-            width: 80px;
-            height: 45px;
+            width: 1.48rem;
+            height: .83rem;
             text-align: center;
             position: absolute;
-            top: 7px;
-            right: -100px;
-            font-size: 20px;
+            top: .13rem;
+            right: -1.85rem;
+            font-size: .37rem;
             color:#999;
           }
         
         }
         .play{
+          width: 3.15rem;
           ul{
-            width: 60%;
-            margin-top: 40px;
+            width: 3.15rem;
+            margin-top: .74rem;
             li{
               display: inline-block;
               text-align: center;
               list-style: none;
-              width: 50%;
+              width: 1.57rem;
               a{
                 text-decoration : none;
               }
               .iconfont{
                 color:#fff;
-                font-size: 45px;
+                font-size: .83rem;
               }
             }
           }
@@ -610,34 +611,34 @@ export default {
           .pm{
             width:100%;
             text-align:right;
-            font-size:28px;
-            height:40px;
+            font-size:.52rem;
+            height:.74rem;
             .icon-Fill:before{
-              font-size:32px;
+              font-size:.59rem;
               color:#ccc;
             }
           }
           .addr{
             width:100%;
             text-align:right;
-            font-size: 18px;
+            font-size: .33rem;
           }   
 
         }
         .todayWea{
-          margin-top:8px;
+          margin-top:.15rem;
           .weather{
             width:100%;
-            font-size:30px;
+            font-size:.56rem;
             text-align:right;
             .icon-feng,.icon-richu,.icon-icon-weather-wind,.icon-taifeng{
-              font-size:32px;
+              font-size:.59rem;
             }
             .feng{
               display: inline-block;
               span{
                 display: inline-block;
-                font-size: 20px;
+                font-size: .37rem;
               }
             }
 
@@ -645,24 +646,27 @@ export default {
         }
         .dayWeather{
           text-align: right;
-          font-size: 50px;
+          font-size: .93rem;
           color: #fff;
           // border-bottom: 1px solid #999;
           .iconfont{
-            font-size: 50px;
+            font-size: .93rem;
             color: #ccc;
           }
           .solid{
-            width: 78%;
-            height: 37px;
-            font-size: 12px;
+            width: 4.4rem;
+            height: .69rem;
+            white-space:nowrap;
+            text-overflow:ellipsis; 
+            overflow: hidden;
+            font-size: .2rem;
             color:#999;
             float: right;
             position: relative;
             border-bottom: 1px solid #999;
             span{
               display:block;
-              height: 21px;
+              height: .39rem;
               position: absolute;
               bottom: 0;
               right: 0;
@@ -670,20 +674,22 @@ export default {
           }
         }
         .future{
+          width: 4.11rem;
+          height: 100%;
+          float: right;
           ul{
-            width: 80%;
+            width: 4.11rem;
             height: 100%;
-            margin-top: 5px;
-            float: right;
+            margin-top: .09rem;
             li{
               list-style: none;
-              width: 100%;
-              height: 30px;
+              width: 4.11rem;
+              height: .56rem;
               span{
                 display:inline-block;
-                width: 24%;
-                height: 30px;
-                line-height: 30px;
+                width: 1rem;
+                height: .56rem;
+                line-height: .56rem;
                 text-align: right;
               }
               // .date{
@@ -691,9 +697,9 @@ export default {
               // }
               .iconfont{
                 display: inline-block;
-                width: 38px;
+                width: .7rem;
                 text-align: right;
-                font-size: 20px;
+                font-size: .37rem;
                 color:#ccc;
               }
             }
@@ -705,10 +711,10 @@ export default {
     }
     .life{
       position: absolute;
-      bottom: 20px;
+      bottom: .37rem;
       width: 100%;
-      height: 50px;
-      font-size: 25px;
+      height: .93rem;
+      font-size: .44rem;
       white-space:normal;
     }
   }
