@@ -126,7 +126,7 @@ export default {
           min:'18'
         }
       ],
-      life:'啦啦啦',
+      life:'---',
       paly:[
         {
           appIcon:'iconfont icon-wangyiyunyinle',
@@ -498,45 +498,45 @@ export default {
     // font-family:"黑体";
     .system{
       width: 100%;
-      height: 30px;
+      height: .7rem;
       .posi-rit{
-        width: 110px;
+        width: 2.04rem;
         position: absolute;
         top: 0;
         right: 0;
         .iconfont{
-          font-size: 20px;
+          font-size: .37rem;
         }
         div{
           display: inline-block;
         }
         .wifi{
-          width: 20px;
-          height: 23px;
+          width: .37rem;
+          height: .43rem;
         }
         .battery{
-          height: 40px;
-          line-height: 40px;
+          height: .74rem;
+          line-height: .74rem;
           .icon-iconset0248{
-            font-size: 22px;
+            font-size: .41rem;
           }
           .icon-icon-test{
-            font-size: 13px;
+            font-size: .24rem;
             position: absolute;
-            top: 1px;
+            top: .02rem;
           }
           div{
             position: absolute;
-            left: 60px;
-            top: -1px;
+            left: 1.11rem;
+            top: -.02rem;
           }
           .over{
-            width: 17px;
-            height: 7px;
+            width: .29rem;
+            height: .136rem;
             background: greenyellow;
             position: absolute;
-            left: 30px;
-            top: 16px;
+            left: .49rem;
+            top: .28rem;
           }
         }
       }
