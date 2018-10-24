@@ -145,15 +145,14 @@ export default {
     if(!localStorage.getItem('weather')){
       this.getWeather();
     }
-    
     this.getData();
+    this.setData();
     this.getWeather();
     this.setWeather();
   },
   methods:{
     getData(){  //获取时间
       let that = this;
-      setInterval(function () {
         let nowDate = new Date;
         let years= nowDate.getFullYear();    //获取完整的年份(4位,1970-????)
         let month=  nowDate.getMonth();       //获取当前月份(0-11,0代表1月)
@@ -326,6 +325,12 @@ export default {
         that.times.minutes=minutes;
         that.times.festival=getFestival(month,date);
 
+      // },1000)
+    },
+    setData(){
+      let that = this;
+      setInterval(function () {
+        that.getData();
       },1000)
     },
     getWeather(){  //获取天气
