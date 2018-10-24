@@ -58,7 +58,7 @@ export default {
     getSystem(){   //获取系统信息
       let that = this;
       navigator.getBattery().then(function(battery) {
-        that.system.batteryNums =  battery.level * 100 + "%"  //当前点电量
+        that.system.batteryNums = parseInt(battery.level * 100) + "%"  //当前点电量
         if(battery.charging == true){
           that.system.ifCharg = true;
           that.system.isOver = true
