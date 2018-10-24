@@ -43,6 +43,7 @@ export default {
   },
   mounted() {
     this.getSystem();
+    this.setSystem();
 
     if(localStorage.getItem("msg")){
       
@@ -57,27 +58,34 @@ export default {
   methods:{
     getSystem(){   //获取系统信息
       let that = this;
-      navigator.getBattery().then(function(battery) {
-        that.system.batteryNums = parseInt(battery.level * 100) + "%"  //当前点电量
-        if(battery.charging == true){
-          that.system.ifCharg = true;
-          that.system.isOver = true
-        }else{
+      if(navigator.userAgent.indexOf('iphone')>-1){
 
-        }
-        //是否正在充电
-        // console.log("正在充电? " + (battery.charging));
-        // console.log("电量: " + battery.level * 100 + "%");
-        // console.log("距离充满: " + battery.chargingTime + " 分钟");
-        // console.log("电池已使用时间: " + battery.dischargingTime + " seconds");
-      });
-      if(navigator.onLine == true){  //网络是否连接
-        that.system.wifi="iconfont icon-WIFIwofi"
       }else{
-        that.system.wifi="iconfont icon-wifiweilianjie"
-      }
-    },
+        navigator.getBattery().then(function(battery) {
+          that.system.batteryNums = parseInt(battery.level * 100) + "%"  //当前点电量
+          if(battery.charging == true){
+            that.system.ifCharg = true;
+            that.system.isOver = true
+          }else{
 
+          }
+        });
+
+        if(navigator.onLine == true){  //网络是否连接
+          that.system.wifi="iconfont icon-WIFIwofi"
+        }else{
+          that.system.wifi="iconfont icon-wifiweilianjie"
+        }
+
+      }
+      
+    },
+    setSystem(){
+      let that = this ;
+      setInterval(function() {
+        that.getSystem();
+      },1000)
+    }
   }
 }
 </script>
