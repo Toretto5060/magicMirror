@@ -1,6 +1,8 @@
 <template>
   <div id="music">
-    哈哈哈哈
+    <div>
+      哈哈哈哈
+    </div>
   </div>
 </template>
 
@@ -24,6 +26,11 @@ export default {
 <style lang="less" scoped>
 *{
   
+}
+#music{
+  width: 100%;
+  // height: 100%;
+  color: #fff;
 }
 
 </style>

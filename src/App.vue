@@ -17,9 +17,11 @@
         </div>
       </div>
     </div>
-    <transition name="slide-fade">
-      <router-view></router-view>
-    </transition>
+      <div class="child">
+        <transition name="slide-fade">
+          <router-view></router-view>
+        </transition>
+      </div>
   </div>
 </template>
 
@@ -81,17 +83,23 @@ export default {
 </script>
 
 <style lang="less">
-body,html,*{
+*{
   margin: 0;
   padding: 0;
 }
-html{
+body,html{
+  width: 100%;
+  height: 100%;
   font-size: 62.5%; /*10 ÷ 16 × 100% = 62.5%*/
 }
 #app {
   // font-family:"草书";//楷体
+  // height: 100%;
   width: 100%;
   height: 100%;
+  background-color: #000;
+
+    // color: #fff;
   /* 可以设置不同的进入和离开动画 */
   /* 设置持续时间和动画函数 */
   .slide-fade-enter-active {
@@ -138,9 +146,12 @@ html{
     }
   }
   .system{
-    width: 99%;
-    height: .7rem;
+    width: 100%;
+    height: .6rem;
+    float: right;
     position: relative;
+    z-index: 99999999;
+    color: #eee;
     .posi-rit{
       width: 2.04rem;
       position: absolute;
@@ -182,6 +193,9 @@ html{
         }
       }
     }
+  }
+  .child{
+    display: block;
   }
 }
 

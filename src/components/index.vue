@@ -47,6 +47,7 @@
 
               <div class="solid">
                 <span>WEATHER FORECAST FOR FOUR DAYS</span>
+                <span class="bottom"></span>
               </div>
             </div>
           </div>
@@ -451,14 +452,12 @@ export default {
   .hello{
     width: 100%;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #000;
-    color: #fff;
+    // position: absolute;
+    // top: .7rem;
+    // left: 0;
+
     // font-family:"黑体";
     .el-row{
-      margin-top: .1rem;
       padding-left: .42rem;
       padding-right: .42rem;
       .left{
@@ -477,6 +476,7 @@ export default {
           width: 2.87rem;
           font-size: .93rem;
           position: relative;
+          color: #fff;
           .second{
             font-size: .46rem;
             color:#999;
@@ -570,7 +570,7 @@ export default {
             color: #ccc;
           }
           .solid{
-            width: 4.4rem;
+            width: 100%;
             height: .69rem;
             white-space:nowrap;
             text-overflow:ellipsis; 
@@ -579,13 +579,17 @@ export default {
             color:#999;
             float: right;
             position: relative;
-            border-bottom: 1px solid #999;
             span{
               display:block;
               height: .39rem;
               position: absolute;
               bottom: 0;
               right: 0;
+            }
+            .bottom{
+              width: 4.5rem;
+              height: .02rem;
+             border-bottom: 1px solid #999;
             }
           }
         }
@@ -626,10 +630,13 @@ export default {
       }
     }
     .life{
+      display: block;
+      color: #ccc;
       position: absolute;
       bottom: .37rem;
-      width: 100%;
-      height: .93rem;
+      left: .42rem;
+      right: .42rem;
+      width: 95%;
       font-size: .44rem;
       white-space:normal;
     }
