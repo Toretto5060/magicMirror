@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <transition name="el-fade-in-linear">
+    <!-- <transition name="el-fade-in-linear"> -->
         <div v-if="isShow" class="transition-box await">
           <p class="Welcomes">{{Welcomes}}</p>
           <p class="Starting">{{Starting}}</p>
         </div>
-    </transition>
-    <div class="system">
+    <!-- </transition> -->
+    <div class="system" v-if="false">
       <div class="posi-rit">
         <div class="wifi">
           <i :class="system.wifi"></i>
@@ -18,9 +18,9 @@
       </div>
     </div>
       <div class="child">
-        <transition name="slide-fade">
+        <!-- <transition name="transition-box await"> -->
           <router-view></router-view>
-        </transition>
+        <!-- </transition> -->
       </div>
   </div>
 </template>
@@ -42,8 +42,8 @@ export default {
     }
   },
   mounted() {
-    this.getSystem();
-    this.setSystem();
+    // this.getSystem();
+    // this.setSystem();
 
     if(localStorage.getItem("msg")){
       
@@ -58,8 +58,10 @@ export default {
   methods:{
     getSystem(){   //获取系统信息
       let that = this;
-      if(navigator.userAgent.indexOf('iphone')>-1){
+      if(navigator.userAgent.indexOf('iPhone')>-1){
+     
 
+     
       }else{
         navigator.getBattery().then(function(battery) {
           that.system.batteryNums = parseInt(battery.level * 100) + "%"  //当前点电量
@@ -110,17 +112,17 @@ body,html{
     // color: #fff;
   /* 可以设置不同的进入和离开动画 */
   /* 设置持续时间和动画函数 */
-  .slide-fade-enter-active {
-    transition: all .3s ease;
-  }
-  .slide-fade-leave-active {
-    transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-  .slide-fade-enter, .slide-fade-leave-to
-  /* .slide-fade-leave-active for below version 2.1.8 */ {
-    transform: translateX(10px);
-    opacity: 0;
-  }
+  // .slide-fade-enter-active {
+  //   transition: all .3s ease;
+  // }
+  // .slide-fade-leave-active {
+  //   transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  // }
+  // .slide-fade-enter, .slide-fade-leave-to
+  // /* .slide-fade-leave-active for below version 2.1.8 */ {
+  //   transform: translateX(10px);
+  //   opacity: 0;
+  // }
   .await{
     width: 100%;
     height: 100%;
@@ -204,6 +206,9 @@ body,html{
   }
   .child{
     display: block;
+    padding-left: .42rem;
+    padding-right: .42rem;
+    padding-top: .42rem;
   }
 }
 

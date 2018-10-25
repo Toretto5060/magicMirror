@@ -119,7 +119,7 @@ export default {
         },
         {
           appIcon:'iconfont icon-jinritoutiao',
-          roleTo:''
+          roleTo:'news'
         },
         {
           appIcon:'',
@@ -463,8 +463,8 @@ export default {
 
     // font-family:"黑体";
     .el-row{
-      padding-left: .42rem;
-      padding-right: .42rem;
+      // padding-left: .42rem;
+      // padding-right: .42rem;
       .left{
         .week{
           font-size: .4rem;
