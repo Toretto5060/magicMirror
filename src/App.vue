@@ -1,27 +1,29 @@
 <template>
   <div id="app">
-    <!-- <transition name="el-fade-in-linear"> -->
-        <div v-if="isShow" class="transition-box await">
-          <p class="Welcomes">{{Welcomes}}</p>
-          <p class="Starting">{{Starting}}</p>
-        </div>
-    <!-- </transition> -->
-    <div class="system" v-if="false">
-      <div class="posi-rit">
-        <div class="wifi">
-          <i :class="system.wifi"></i>
-        </div>
-        <div class="battery">
-          <i class="iconfont icon-iconset0248"></i><i v-if="system.ifCharg" class="iconfont icon-icon-test"></i><div>{{system.batteryNums}}</div>
-          <div v-if="system.isOver" class="over"></div>
+    <transition name="el-fade-in-linear">
+      <div v-if="isShow" class="transition-box await">
+        <p class="Welcomes">{{Welcomes}}</p>
+        <p class="Starting">{{Starting}}</p>
+      </div>
+    </transition>
+
+      <div class="system" v-if="false">
+        <div class="posi-rit">
+          <div class="wifi">
+            <i :class="system.wifi"></i>
+          </div>
+          <div class="battery">
+            <i class="iconfont icon-iconset0248"></i><i v-if="system.ifCharg" class="iconfont icon-icon-test"></i><div>{{system.batteryNums}}</div>
+            <div v-if="system.isOver" class="over"></div>
+          </div>
         </div>
       </div>
-    </div>
       <div class="child">
         <!-- <transition name="transition-box await"> -->
           <router-view></router-view>
         <!-- </transition> -->
       </div>
+
   </div>
 </template>
 
