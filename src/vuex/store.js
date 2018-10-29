@@ -7,7 +7,7 @@ export default new Vuex.Store({
 
   },
   state: {
-    hours:'666'
+    musicPic: '',
   },
   mutations: {
 

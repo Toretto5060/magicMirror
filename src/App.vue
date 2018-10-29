@@ -1,11 +1,13 @@
 <template>
   <div id="app">
-    <transition name="el-fade-in-linear">
-      <div v-if="isShow" class="transition-box await">
-        <p class="Welcomes">{{Welcomes}}</p>
-        <p class="Starting">{{Starting}}</p>
-      </div>
-    </transition>
+    <div class="bg" :style="{backgroundImage:'url(' + backc + ')'}"></div>
+    <div class="content">
+      <transition name="el-fade-in-linear">
+        <div v-if="isShow" class="transition-box await">
+          <p class="Welcomes">{{Welcomes}}</p>
+          <p class="Starting">{{Starting}}</p>
+        </div>
+      </transition>
 
       <div class="system" v-if="false">
         <div class="posi-rit">
@@ -18,11 +20,15 @@
           </div>
         </div>
       </div>
+
       <div class="child">
         <!-- <transition name="transition-box await"> -->
           <router-view></router-view>
         <!-- </transition> -->
       </div>
+
+    </div>
+  
 
   </div>
 </template>
@@ -32,6 +38,8 @@ export default {
   name: 'App',
   data(){
     return {
+      // backc:encodeURI('http://p2.music.126.net/tt8xwK-ASC2iqXNUXYKoDQ==/109951163606377163.jpg'),
+      backc:'',
       isShow:true,
       Welcomes:"",
       Starting:"",
@@ -43,16 +51,24 @@ export default {
       },
     }
   },
+  watch:{
+    '$store.state.musicPic'(){//soket 更新内容
+      this.backc = this.$store.state.musicPic
+    }
+     
+  },
   mounted() {
     // this.getSystem();
     // this.setSystem();
-
     if(localStorage.getItem("msg")){
       
     }else{
       this.Welcomes="6666";
       this.Starting="魔镜系统正在启动中...";
     }
+    // if(this.$store.state.musicPic){
+    //   this.backc = this.$store.state.musicPic
+    // }
     setTimeout(() => {
       this.isShow = false
     }, 3000);
@@ -110,21 +126,31 @@ body,html{
   width: 100%;
   height: 100%;
   background-color: #000;
+  // background-size:100% 100%;
+  // -moz-background-size:100% 100%;
+  .bg{
+    width: 100%;
+    height: 100%;
 
-    // color: #fff;
-  /* 可以设置不同的进入和离开动画 */
-  /* 设置持续时间和动画函数 */
-  // .slide-fade-enter-active {
-  //   transition: all .3s ease;
-  // }
-  // .slide-fade-leave-active {
-  //   transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  // }
-  // .slide-fade-enter, .slide-fade-leave-to
-  // /* .slide-fade-leave-active for below version 2.1.8 */ {
-  //   transform: translateX(10px);
-  //   opacity: 0;
-  // }
+    background-repeat:no-repeat;
+    background-size: cover;
+    -webkit-filter: blur(15px);
+    -moz-filter: blur(15px);
+    -o-filter: blur(15px);
+    -ms-filter: blur(15px);
+    filter: blur(15px);
+
+    -webkit-transition:all 1.0s ease-in-out;
+    -moz-transition:all 1.0s ease-in-out;
+    -o-transition:all 1.0s ease-in-out;
+    -ms-transition:all 1.0s ease-in-out;
+    transition:all 1.0s ease-in-out;
+    // opacity: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
   .await{
     width: 100%;
     height: 100%;

@@ -35,10 +35,14 @@ export default {
 #news{
   width: 100%;
   height: 100%;
+  padding-top: .74rem;
   color: #fff;
   .top{
     width: 100%;
-    height: 100%;
+    height: 30px;
+    position: absolute;
+    top: .42rem;
+    left: .42rem;
     .esc{
       width: .74rem;
       height: .74rem;

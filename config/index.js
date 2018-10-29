@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:3000/',
+        target: 'http://my.toretto.top:3000/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
@@ -47,7 +47,7 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../dist/index.html'), 
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),

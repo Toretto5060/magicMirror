@@ -48,7 +48,11 @@ axiosIns.interceptors.response.use(function (response) {
   // Vue.prototype.$message('这是一条消息提示');
   let msg = '';
   if (error.request.status) {
-    msg = error.request.status + ': ' + error.response.data.message;
+    if (error.response.data.msg) {
+      msg = error.request.status + ': ' + error.response.data.msg;
+    }else{
+      msg = error.request.status + ': ' + error.response.data.message;
+    }
   } else {
     msg = 'Time out'
   }
