@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {
-        target: 'http://my.toretto.top:3000/',
+      '/': {
+        target: 'http://mirror.toretto.top:3000/',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '/'
+          '^/': '/'
         }
       }
       
