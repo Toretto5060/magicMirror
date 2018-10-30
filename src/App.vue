@@ -28,7 +28,16 @@
       </div>
 
     </div>
-  
+
+    <div class="audio">
+      <audio :src="musicUrl" autoplay id="music1"></audio>
+    </div>
+
+    <div class="button" >
+      <div class="play" @click="playMusic">
+        <i :class=playIcon></i>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -49,13 +58,21 @@ export default {
         ifCharg:false,
         isOver:false
       },
+      musicUrl:'',
+      playIcon:'iconfont icon-play',
+
     }
   },
   watch:{
-    '$store.state.musicPic'(){//soket 更新内容
+    // '$store.state.musicPic'(){
+    //   this.backc = this.$store.state.musicPic
+    // },
+    '$store.state.musicUrl'(){
+      this.stopMusic()
+      this.musicUrl = this.$store.state.musicUrl
       this.backc = this.$store.state.musicPic
-    }
-     
+      this.playMusic();
+    } 
   },
   mounted() {
     // this.getSystem();
@@ -105,7 +122,31 @@ export default {
       setInterval(function() {
         that.getSystem();
       },1000)
+    },
+    playMusic(){
+      let that = this;
+      var audio = document.getElementById('music1'); 
+      if(audio!==null && that.musicUrl != ''){             
+        //检测播放是否已暂停.audio.paused 在播放器播放时返回false.
+        if(audio.paused){                 
+            audio.play();//audio.play();// 这个就是播放  
+            that.playIcon = "iconfont icon-zanting"
+        }
+      }  
+    },
+    stopMusic(){
+      let that = this;
+      var audio = document.getElementById('music1'); 
+      if(audio!==null && that.musicUrl != ''){             
+        //检测播放是否已暂停.audio.paused 在播放器播放时返回false.
+        if(!audio.paused){ 
+          audio.pause();// 这个就是暂停
+          that.playIcon = "iconfont icon-play"
+        }
+      }
     }
+
+
   }
 }
 </script>
@@ -237,6 +278,22 @@ body,html{
     padding-left: .42rem;
     padding-right: .42rem;
     padding-top: .42rem;
+  }
+  .audio{
+    width: 5.56rem;
+    margin:.37rem auto;
+    z-index: 999999;
+  }
+  .button{
+    width: 200px;
+    height: 100px;
+    position: absolute;
+    bottom:100px;
+    z-index: 999999999;
+    color: #fff;
+    .iconfont{
+      font-size: .37rem;
+    }
   }
 }
 

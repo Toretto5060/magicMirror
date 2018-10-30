@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from '@/components/index'
 import Music from '@/components/music'
 import News from '@/components/news'
+import MusicListews from '@/components/musicList'
 
 Vue.use(Router)
 
@@ -20,6 +21,11 @@ export default new Router({
       path: '/news',
       name: 'News',
       component: News
-    }
+    },
+     {
+       path: '/musicList',
+       name: 'MusicListe',
+       component: MusicListews
+     }
   ]
 })

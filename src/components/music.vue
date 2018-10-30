@@ -63,14 +63,6 @@
 
     </div>
 
-    <div class="audio">
-      <audio  :src="musicUrl" autoplay controls id="music1"></audio>
-    </div>
-  
-
-
-
-
   </div>
 </template>
 
@@ -102,7 +94,6 @@ export default {
         title:'',
         num:''
       }],
-      musicUrl:'',
     }
   },
   mounted() {
@@ -206,18 +197,20 @@ export default {
        
       })
     },
-    getMusicUrl(music_url,music_pic,music_list){   //检查歌曲是否可播放并获取歌曲播放地址
+    getMusicUrl(music_id,music_pic,music_list){   //检查歌曲是否可播放并获取歌曲播放地址
       let that = this;
       let getId ={
-        id:music_url
+        id:music_id
       }
       cheackMusicUrl(getId).then(res=>{
         if(res.success == true){
           userMusicUrl(getId).then(res=>{
             if(res.code == 200){
-              that.$store.state.musicPic = music_pic
-              that.musicUrl= res.data[0].url;
-              that.on();
+              that.$store.state.musicPic = music_pic;
+              // that.musicUrl= res.data[0].url;
+              that.$store.state.musicUrl = res.data[0].url;
+              // that.$store.state.musicPlay= 'true'
+              // this.$router.push({path:'/musicList'})
             }
           })
         }else{
@@ -226,15 +219,15 @@ export default {
       })
     },
     on(){
-      var audio = document.getElementById('music1');
       // if(!audio.play){
-        audio.play();
+      //   var audio = document.getElementById('music1');
+      //   audio.play();
       // }
     },
     off(){
-      var audio = document.getElementById('music1');
-      // if(!audio.pause){
-        audio.pause();
+      // var audio = document.getElementById('music1');
+      // // if(!audio.pause){
+      //   audio.pause();
       // }
     }
   
@@ -350,11 +343,6 @@ export default {
         background: #535353;
       }
     }
-  }
-  .audio{
-    width: 5.56rem;
-    margin:.37rem auto;
-    z-index: 999999;
   }
   
 }
