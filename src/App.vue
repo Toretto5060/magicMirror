@@ -118,7 +118,7 @@ export default {
 body,html{
   width: 100%;
   height: 100%;
-  font-size: 62.5%; /*10 ÷ 16 × 100% = 62.5%*/
+  font-size: 6.25%; /*10 ÷ 16 × 100% = 62.5%*/
 }
 #app {
   // font-family:"草书";//楷体

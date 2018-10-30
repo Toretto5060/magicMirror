@@ -9,56 +9,62 @@
     </div>
 
     <div class="songList">
-      <div class="myList">
-        <span class="menuTitle">{{myTitle}}</span>
-        <span class="menuTitle right" @click="display" v-if='musicDetails'>返回</span>
-        <ul v-show="myMenuIs">
-          <li  v-for="list in songList" @click="getUserMenuDetails(list.id)">
-            <span class="pic">
-              <img :src="list.pic" alt="">
-            </span>
-            <p class="title">
-              <span>{{list.title}}</span>
-              <span class="nums">{{list.num}}</span>
-            </p>
-          </li>
-        </ul>
+      <el-row>
+        <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <div class="grid-content bg-purple myList">
+            <span class="menuTitle">{{myTitle}}</span>
+            <span class="menuTitle right" @click="display" v-if='musicDetails'>返回</span>
+            <ul v-show="myMenuIs">
+              <li  v-for="list in songList" @click="getUserMenuDetails(list.id)">
+                <span class="pic">
+                  <img :src="list.pic" alt="">
+                </span>
+                <p class="title">
+                  <span>{{list.title}}</span>
+                  <span class="nums">{{list.num}}</span>
+                </p>
+              </li>
+            </ul>
+            <ul v-if="musicDetails" v-loading="isLoad"
+              element-loading-background="rgba(0, 0, 0, 0)">
+              <li  v-for="list in musicMuneDetails" @click="getMusicUrl(list.id,list.pic,list)">
+                <span class="pic">
+                  <img :src="list.pic" alt="">
+                </span>
+                <p class="title">
+                    <span>{{list.title}}</span>
+                    <span class="nums">{{list.num}}</span>
+                </p>
+              </li>
+            </ul>
+          </div>
+        </el-col>
 
-        <ul v-if="musicDetails" v-loading="isLoad"
-          element-loading-background="rgba(0, 0, 0, 0)">
-          <li  v-for="list in musicMuneDetails" @click="getMusicUrl(list.id,list.pic,list)">
-            <span class="pic">
-              <img :src="list.pic" alt="">
-            </span>
-            <p class="title">
-                <span>{{list.title}}</span>
-                <span class="nums">{{list.num}}</span>
-            </p>
-          </li>
-        </ul>
+        <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <div class="hotList">
+            <span class="menuTitle">热门歌曲</span>
+            <ul>
+              <li  v-for="list in hotList" @click="getMusicUrl(list.id,list.pic,list)">
+                <span class="pic">
+                  <img :src="list.pic" alt="">
+                </span>
+                <p class="title">
+                    <span>{{list.title}}</span>
+                    <span class="nums">{{list.num}}</span>
+                </p>
+              </li>
+            </ul>
+          </div>
+        </el-col>
+      </el-row>
 
 
-      </div>
-     
-      <div class="hotList">
-        <span class="menuTitle">热门歌曲</span>
-        <ul>
-          <li  v-for="list in hotList" @click="getMusicUrl(list.id,list.pic,list)">
-            <span class="pic">
-              <img :src="list.pic" alt="">
-            </span>
-            <p class="title">
-                <span>{{list.title}}</span>
-                <span class="nums">{{list.num}}</span>
-            </p>
-          </li>
-        </ul>
-      </div>
+
 
     </div>
 
-    <div>
-      <audio :src="musicUrl" autoplay></audio>
+    <div class="audio">
+      <audio  :src="musicUrl" autoplay controls id="music1"></audio>
     </div>
   
 
@@ -100,12 +106,23 @@ export default {
     }
   },
   mounted() {
+    this.getUserId();
     this.getUserMenu();
     this.getHotMenu();
   },
   methods:{
-    getUserMenu(){   //获取指定用户歌单
+    getUserId(){
       let that = this;
+      let user = {
+        phone:'18121405060',
+        password:'ZL19961025'
+      }
+      loginMusic(user).then(res=>{
+        // console.log(res)
+      })
+    },
+    getUserMenu(){   //获取指定用户歌单
+      let that = this; 
       let postData={
         uid:120303512   //我的用户id
       }
@@ -199,9 +216,8 @@ export default {
           userMusicUrl(getId).then(res=>{
             if(res.code == 200){
               that.$store.state.musicPic = music_pic
-              console.log(music_pic)
-              console.log(res.data[0].url);
               that.musicUrl= res.data[0].url;
+              that.on();
             }
           })
         }else{
@@ -236,8 +252,8 @@ export default {
   padding-top: .74rem;
   color: #fff;
   .top{
-    width: 100%;
-    height: 30px;
+    width: 80%;
+    height: .56rem;
     position: absolute;
     top: .42rem;
     left: .42rem;
@@ -260,7 +276,7 @@ export default {
   .songList{
     position: relative;
     .myList,.hotList{
-      width: 50%;
+      width: 96%;
       .menuTitle{
         display:inline-block;
         height: .74rem;
@@ -269,11 +285,12 @@ export default {
       .right{
         float: right;
         margin-right: .74rem;
-      }
+      }  
       ul{
         width: 100%;
         height: 7.41rem;
         overflow: auto;
+
         li{
           list-style: none;
           height: .84rem;  
@@ -296,11 +313,13 @@ export default {
           }
           .title{
             display: inline-block;
-            width: 4.07rem;
+            // width: 4.07rem;
+            width: 70%;
+
             height: .74rem;
             position: absolute;
             top: 0;
-            right: .19rem;
+            left: 1.1rem;
             span{
               display: block;
               width: 100%;
@@ -315,12 +334,27 @@ export default {
           }
         }
       } 
+      ul::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 5px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+      }
+      ul::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 5px;
+        -webkit-box-shadow: inset 0 0 2.5px rgba(0,0,0,0.2);
+        background: #999;
+
+      }
+      ul::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 2.5px rgba(0,0,0,0.2);
+        border-radius: 5px;
+        background: #535353;
+      }
     }
-    .hotList{
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
+  }
+  .audio{
+    width: 5.56rem;
+    margin:.37rem auto;
+    z-index: 999999;
   }
   
 }
