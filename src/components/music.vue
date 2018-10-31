@@ -1,10 +1,8 @@
 <template>
   <div id="music">
     <div class="top">
-      <div class="esc">
-        <router-link :to="'/'">
+      <div class="esc" @click="goUp">
           <i class="iconfont icon-fanhui"></i>
-        </router-link>
       </div>
     </div>
 
@@ -97,11 +95,19 @@ export default {
     }
   },
   mounted() {
+    this.$store.state.buttonShow = false;
     this.getUserId();
     this.getUserMenu();
     this.getHotMenu();
   },
   methods:{
+    goUp(){
+      let that = this;
+      that.$router.push({path:'/'});
+      if(that.$store.state.musicUrl != ''){
+        that.$store.state.buttonShow = true;
+      }
+    },
     getUserId(){
       let that = this;
       let user = {
@@ -346,5 +352,6 @@ export default {
   }
   
 }
+
 
 </style>

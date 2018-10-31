@@ -32,10 +32,20 @@
     <div class="audio">
       <audio :src="musicUrl" autoplay id="music1"></audio>
     </div>
-
-    <div class="button" >
-      <div class="play" @click="playMusic">
+    
+    <div class="button" v-show="butShow"  @mousedown="mousedown($event)" @mouseup='mouseup($event)' @touchstart="mousedown($event)"  @touchen="mouseup($event)">  <!-- @mousedown="down" @mousemove="move" @mouseup="end" id="moveDiv"-->
+      <div class="close" @click="closeMusic">
+        <i class="iconfont icon-logout"></i>
+      </div>
+      <div class=" polish"></div>
+      <div class="prev">
+        <i class="iconfont icon-yduishangyiqu"></i>
+      </div> 
+      <div class="play" @click="playOrStop">
         <i :class=playIcon></i>
+      </div>
+       <div class="next">
+        <i class="iconfont icon-yduixiayiqu"></i>
       </div>
     </div>
 
@@ -60,19 +70,27 @@ export default {
       },
       musicUrl:'',
       playIcon:'iconfont icon-play',
+      butShow:false,
+      flags:false,
 
     }
+  },
+  components: {
+
   },
   watch:{
     // '$store.state.musicPic'(){
     //   this.backc = this.$store.state.musicPic
     // },
     '$store.state.musicUrl'(){
-      this.stopMusic()
-      this.musicUrl = this.$store.state.musicUrl
-      this.backc = this.$store.state.musicPic
+      this.butShow = this.$store.state.buttonShow;
+      this.musicUrl = this.$store.state.musicUrl;
+      this.backc = this.$store.state.musicPic;
       this.playMusic();
-    } 
+    },
+    '$store.state.buttonShow'(){
+      this.butShow = this.$store.state.buttonShow;
+    }
   },
   mounted() {
     // this.getSystem();
@@ -91,6 +109,38 @@ export default {
     }, 3000);
   },
   methods:{
+    mousedown: function (event) {
+      var event=event||window.event;
+      var _target = event.target
+
+      var startx=event.clientX || event.changedTouches[0].clientX;
+      var starty=event.clientY || event.changedTouches[0].clientY;
+      var sb_bkx=startx-event.target.offsetLeft;
+      var sb_bky=starty-event.target.offsetTop;
+      var ww=document.documentElement.clientWidth;
+      var wh = window.innerHeight;
+
+      if (event.preventDefault) {
+        event.preventDefault();
+      } else{
+        event.returnValue=false;
+      };
+      document.onmousemove=function (ev) {
+        var event=ev||window.event;
+        var scrolltop=document.documentElement.scrollTop||document.body.scrollTop;
+        if (event.clientY < 0 || event.clientX < 0 || event.clientY > wh || event.clientX > ww) {
+          return false;
+        };
+        var endx=event.clientX-sb_bkx;
+        var endy=event.clientY-sb_bky;
+        _target.style.left=endx+'px';
+        _target.style.top=endy+'px';
+      }
+    },
+    mouseup: function (e) {
+      document.onmousemove=null;
+    },
+
     getSystem(){   //获取系统信息
       let that = this;
       if(navigator.userAgent.indexOf('iPhone')>-1){
@@ -123,6 +173,21 @@ export default {
         that.getSystem();
       },1000)
     },
+    playOrStop(){
+      let that = this;
+      var audio = document.getElementById('music1'); 
+      if(audio!==null && that.playIcon == "iconfont icon-zanting"){
+        if(!audio.paused){                 
+            audio.pause();//audio.play();// 这个就是播放  
+            that.playIcon = "iconfont icon-play"
+        }
+      }else if(that.playIcon == "iconfont icon-play" && that.musicUrl != ''){
+        if(audio.paused){                 
+            audio.play();//audio.play();// 这个就是播放  
+            that.playIcon = "iconfont icon-zanting"
+        }
+      }
+    },
     playMusic(){
       let that = this;
       var audio = document.getElementById('music1'); 
@@ -144,6 +209,18 @@ export default {
           that.playIcon = "iconfont icon-play"
         }
       }
+    },
+    closeMusic(){
+      let that = this;
+      var audio = document.getElementById('music1'); 
+      if(audio!==null && that.musicUrl != ''){             
+          audio.pause();
+          that.playIcon = "iconfont icon-play";
+          that.$store.state.musicPic='';
+          that.$store.state.musicUrl='';
+          that.$store.state.musicPlay='false';
+          that.$store.state.buttonShow=false;
+      }
     }
 
 
@@ -160,6 +237,12 @@ body,html{
   width: 100%;
   height: 100%;
   font-size: 6.25%; /*10 ÷ 16 × 100% = 62.5%*/
+}
+body{
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 #app {
   // font-family:"草书";//楷体
@@ -285,14 +368,61 @@ body,html{
     z-index: 999999;
   }
   .button{
-    width: 200px;
-    height: 100px;
+    width: 3.33rem;
+    height: 1.48rem;
     position: absolute;
-    bottom:100px;
+    bottom:1.85rem;
+    left: .42rem;
     z-index: 999999999;
     color: #fff;
-    .iconfont{
-      font-size: .37rem;
+    background-color: rgba(255,255,255,.2);
+   
+    .close{
+      width: .46rem;
+      height: .46rem;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 999999;
+      .iconfont{
+        font-size: .37rem;
+      }
+    }
+    // .polish{
+    //   width: 3.33rem;
+    //   height: 1.48rem;
+    //   position: absolute;
+    //   top: 0;
+    //   z-index: -999999;
+    //   background-color: rgba(255,255,255,.2);
+
+    //   background-repeat:no-repeat;
+    //   background-size: cover;
+    //   -webkit-filter: blur(1px);
+    //   -moz-filter: blur(1px);
+    //   -o-filter: blur(1px);
+    //   -ms-filter: blur(1px);
+    //   filter: blur(1px);
+    // }
+    div{
+      width: 1.11rem;
+      position: absolute;
+      bottom: .09rem;
+      z-index: 9;
+      .iconfont{
+        display: block;
+        width: 100%;
+        font-size: .47rem;
+        text-align: center;
+      }
+    }
+    .play{
+      position: absolute;
+      left: 1.11rem;
+    }
+    .next{
+      position: absolute;
+      left: 2.22rem;
     }
   }
 }

@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     musicPic: '',
     musicUrl: '',
-    musicPlay:'false'
+    musicPlay:'false',
+    buttonShow:false,
   },
   mutations: {
 

@@ -38,7 +38,7 @@ export default {
   padding-top: .74rem;
   color: #fff;
   .top{
-    width: 100%;
+    width: 80%;
     height: 30px;
     position: absolute;
     top: .42rem;
