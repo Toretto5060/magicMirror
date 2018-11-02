@@ -15,7 +15,7 @@
             <ul v-show="myMenuIs">
               <li  v-for="list in songList" @click="getUserMenuDetails(list.id)">
                 <span class="pic">
-                  <img :src="list.pic" alt="">
+                  <img v-lazy="list.pic" alt="">
                 </span>
                 <p class="title">
                   <span>{{list.title}}</span>
@@ -27,7 +27,7 @@
               element-loading-background="rgba(0, 0, 0, 0)">
               <li  v-for="list in musicMuneDetails" @click="getMusicUrl(list.id,list.pic,list)">
                 <span class="pic">
-                  <img :src="list.pic" alt="">
+                  <img v-lazy="list.pic"  alt="">
                 </span>
                 <p class="title">
                     <span>{{list.title}}</span>
@@ -40,11 +40,11 @@
 
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
           <div class="hotList">
-            <span class="menuTitle">热门歌曲</span>
+            <span class="menuTitle">每日推荐</span>
             <ul>
               <li  v-for="list in hotList" @click="getMusicUrl(list.id,list.pic,list)">
                 <span class="pic">
-                  <img :src="list.pic" alt="">
+                  <img v-lazy="list.pic" alt="">
                 </span>
                 <p class="title">
                     <span>{{list.title}}</span>
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import {loginMusic,userMusic,userMusicDetails,hotMusic,userMusicUrl,cheackMusicUrl} from '../api/index.js';
+import {loginMusic,loginUserStatus,userMusic,userMusicDetails,dayMusic,userMusicUrl,cheackMusicUrl} from '../api/index.js';
 export default {
   name: 'music',
   data(){
@@ -97,8 +97,6 @@ export default {
   mounted() {
     this.$store.state.buttonShow = false;
     this.getUserId();
-    this.getUserMenu();
-    this.getHotMenu();
   },
   methods:{
     goUp(){
@@ -108,20 +106,42 @@ export default {
         that.$store.state.buttonShow = true;
       }
     },
-    getUserId(){
+    getUserId(){  //登录
       let that = this;
+      // let timestamp = Date.parse(new Date());
       let user = {
         phone:'18121405060',
-        password:'ZL19961025'
+        password:'ZL19961025',
+        // timestamp:timestamp
+        // email:'shitou5698@163.com',
+        // password:'ZL19961025'
       }
       loginMusic(user).then(res=>{
+        if(res.code == 200){
+          that.getUserMenu(res.account.id);
+          that.getDayMenu();
+        }
         // console.log(res)
       })
     },
-    getUserMenu(){   //获取指定用户歌单
+    getUserStatus(){  //获取登录状态
+      let that = this;
+      if(that.userId == ''){
+        return;
+      }
+      loginUserStatus().then(res=>{
+        if(res.code == 200){
+        }
+        // console.log(res)
+      })
+    },
+    getUserMenu(userid){   //获取指定用户歌单
       let that = this; 
+      if(userid == ''){
+        return;
+      }
       let postData={
-        uid:120303512   //我的用户id
+        uid:userid   //我的用户id
       }
       userMusic(postData).then(res=>{
         if(res.code == 200){
@@ -181,9 +201,9 @@ export default {
       that.musicDetails=false;
       that.myMenuIs=true;
     },
-    getHotMenu(){  //获取热门歌曲前20首
+    getDayMenu(){  //获取每日推荐歌曲
       let that = this;
-      hotMusic().then(res=>{
+      dayMusic().then(res=>{
        if(res.code == 200){
           that.hotList=[];
           for(let i=0;i<20;i++){  

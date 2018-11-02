@@ -14,8 +14,13 @@ export const getWeather = params => {
   return axiosIns.get(weather, { params: params }) //qs.stringify(params)
 }
 
-export const loginMusic = params => { //获取网易云指定用户的歌单
+export const loginMusic = params => { //登录
   return axiosIns.get(host + '/login/cellphone', {params: params})
+}
+export const loginUserStatus = params => { //获取登录状态
+  return axiosIns.get(host + '/login/status', {
+    params: params
+  })
 }
 
 export const userMusic = params => {  //获取网易云指定用户的歌单
@@ -24,6 +29,13 @@ export const userMusic = params => {  //获取网易云指定用户的歌单
 export const userMusicDetails = params => { //获取歌单歌曲
   return axiosIns.get(host +'/playlist/detail', { params: params}) 
 }
+export const dayMusic = params => { //获取每日推送歌曲
+  return axiosIns.get(host + '/recommend/songs', {
+    params: params
+  })
+}
+
+
 export const userMusicUrl= params => { //获取歌曲url  若多个id，以,隔开
   return axiosIns.get(host +'/song/url', {params: params})
 }
@@ -31,7 +43,5 @@ export const userMusicUrl= params => { //获取歌曲url  若多个id，以,隔�
 export const cheackMusicUrl = params => { //查询歌曲是否可播放 返回success
   return axiosIns.get(host +'/check/music', {params: params})
 }
-export const hotMusic = params => { //获取网易云指定用户的歌单
-  return axiosIns.get(host +'/top/list?idx=1', { params: params }) 
-}
+
 

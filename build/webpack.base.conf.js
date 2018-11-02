@@ -68,7 +68,15 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
+      },
+      {
+        test: /\.(ttf|eot|woff|svg|jpg|png|gif)$/,
+          use: [{
+            loader: 'url-loader' 
+          }] 
       }
+
+
     ]
   },
   node: {

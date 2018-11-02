@@ -10,7 +10,8 @@ let axiosIns = Axios.create({
   timeout: 30000,
   headers: {
     // token: store.state.token
-  },
+  }
+
   // transformRequest: [function (data) {
   // if(data){
   //   if(data.typ){
