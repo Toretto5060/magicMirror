@@ -38,13 +38,13 @@
         <i class="iconfont icon-logout"></i>
       </div>
       <div class=" polish"></div>
-      <div class="prev">
+      <div class="prev" @click="prev">
         <i class="iconfont icon-yduishangyiqu"></i>
       </div> 
       <div class="play" @click="playOrStop">
         <i :class=playIcon></i>
       </div>
-       <div class="next">
+       <div class="next" @click="next">
         <i class="iconfont icon-yduixiayiqu"></i>
       </div>
     </div>
@@ -85,7 +85,7 @@ export default {
     '$store.state.musicUrl'(){
       this.butShow = this.$store.state.buttonShow;
       this.musicUrl = this.$store.state.musicUrl;
-      this.backc = this.$store.state.musicPic;
+      this.backc = this.$store.state.musicPic;      
       this.playMusic();
     },
     '$store.state.buttonShow'(){
@@ -221,6 +221,18 @@ export default {
           that.$store.state.musicPlay='false';
           that.$store.state.buttonShow=false;
       }
+    },
+    prev(){
+      let that= this;
+      let index = that.fuc.idGetIndex(that.$store.state.musicId,that.$store.state.musicList);
+      if(index != 0){
+        that.$store.state.musicId = that.$store.state.musicList[index-1].id;
+        let getMusicPic=that.$store.state.musicList[index].al ? that.$store.state.musicList[index].al.picUrl :  that.$store.state.musicList[index].album.picUrl
+        getMusicUrl(that.$store.state.musicId,getMusicPic);
+      }
+    },
+    next(){
+
     }
 
 

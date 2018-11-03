@@ -7,8 +7,10 @@ export default new Vuex.Store({
 
   },
   state: {
-    musicPic: '',
-    musicUrl: '',
+    musicId:'',    //当前播放歌曲id
+    musicPic: '',  //当前播放歌曲图片
+    musicUrl: '',  //当前播放地址
+    musicList:[],  //当前播放列表
     musicPlay:'false',
     buttonShow:false,
   },

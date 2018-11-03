@@ -7,10 +7,11 @@ import Axios from 'axios';
 
 //封装Axios
 let axiosIns = Axios.create({
-  timeout: 30000,
+  timeout: 60000,
   headers: {
     // token: store.state.token
-  }
+  },
+  // crossDomain: true,
 
   // transformRequest: [function (data) {
   // if(data){
@@ -63,6 +64,7 @@ axiosIns.interceptors.response.use(function (response) {
   Vue.prototype.$message.error(msg);
   return Promise.reject(error);
 });
+
 // Vue.prototype.$Axios = axiosIns;
 
 

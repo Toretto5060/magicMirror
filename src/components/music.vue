@@ -25,7 +25,7 @@
             </ul>
             <ul v-if="musicDetails" v-loading="isLoad"
               element-loading-background="rgba(0, 0, 0, 0)">
-              <li  v-for="list in musicMuneDetails" @click="getMusicUrl(list.id,list.pic,list)">
+              <li  v-for="list in musicMuneDetails" @click="getMusicUrl(list.id,list.pic)">
                 <span class="pic">
                   <img v-lazy="list.pic"  alt="">
                 </span>
@@ -39,10 +39,10 @@
         </el-col>
 
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-          <div class="hotList">
+          <div class="dayList">
             <span class="menuTitle">每日推荐</span>
             <ul>
-              <li  v-for="list in hotList" @click="getMusicUrl(list.id,list.pic,list)">
+              <li  v-for="list in dayList" @click="getMusicUrl(list.id,list.pic)">
                 <span class="pic">
                   <img v-lazy="list.pic" alt="">
                 </span>
@@ -86,13 +86,16 @@ export default {
         title:'',
         num:''
       }],
-      hotList:[{
+      dayList:[{
         id:'',
         pic:'',
         title:'',
         num:''
       }],
     }
+  },
+  watch:{
+  
   },
   mounted() {
     this.$store.state.buttonShow = false;
@@ -108,13 +111,9 @@ export default {
     },
     getUserId(){  //登录
       let that = this;
-      // let timestamp = Date.parse(new Date());
       let user = {
         phone:'18121405060',
         password:'ZL19961025',
-        // timestamp:timestamp
-        // email:'shitou5698@163.com',
-        // password:'ZL19961025'
       }
       loginMusic(user).then(res=>{
         if(res.code == 200){
@@ -173,6 +172,7 @@ export default {
       that.isLoad = true;
       userMusicDetails(params).then(res=>{
         if(res.code == 200){
+          that.$store.state.musicList = res.playlist.tracks   //设置当前播放列表数组
           that.isLoad = false;
           that.myTitle=res.playlist.name;
           for(let i=0;i<res.playlist.tracks.length;i++){  
@@ -204,8 +204,9 @@ export default {
     getDayMenu(){  //获取每日推荐歌曲
       let that = this;
       dayMusic().then(res=>{
-       if(res.code == 200){
-          that.hotList=[];
+        if(res.code == 200){
+          that.$store.state.musicList = res.recommend;   // 设置当前播放列表数组
+          that.dayList=[];
           for(let i=0;i<20;i++){  
           var data={
             id:'',
@@ -213,36 +214,35 @@ export default {
             title:'',
             num:''
           }
-          data.id=res.playlist.tracks[i].id;
-          data.pic=res.playlist.tracks[i].al.picUrl
-          data.title=res.playlist.tracks[i].name
-          data.num=res.playlist.tracks[i].ar[0].name
-          that.hotList.push(data) 
-          }
+          data.id=res.recommend[i].id;
+          data.pic=res.recommend[i].album.picUrl
+          data.title=res.recommend[i].name
+          data.num=res.recommend[i].artists[0].name
+          // +"("+res.recommend[i].reason+")"
+          that.dayList.push(data) 
         }
+      }
        
       })
     },
-    getMusicUrl(music_id,music_pic,music_list){   //检查歌曲是否可播放并获取歌曲播放地址
+    getMusicUrl(music_id,music_pic){   //检查歌曲是否可播放并获取歌曲播放地址
       let that = this;
       let getId ={
         id:music_id
       }
-      cheackMusicUrl(getId).then(res=>{
-        if(res.success == true){
-          userMusicUrl(getId).then(res=>{
-            if(res.code == 200){
-              that.$store.state.musicPic = music_pic;
-              // that.musicUrl= res.data[0].url;
-              that.$store.state.musicUrl = res.data[0].url;
-              // that.$store.state.musicPlay= 'true'
-              // this.$router.push({path:'/musicList'})
-            }
-          })
-        }else{
-          return;
-        }
-      })
+    cheackMusicUrl(getId).then(res=>{
+      if(res.success == true){
+        userMusicUrl(getId).then(res=>{
+          if(res.code == 200){
+            that.$store.state.musicPic = music_pic;
+            that.$store.state.musicId = music_id;
+            that.$store.state.musicUrl = res.data[0].url;
+          }
+        })
+      }else{
+        return;
+      }
+    })
     },
     on(){
       // if(!audio.play){
@@ -294,7 +294,7 @@ export default {
 
   .songList{
     position: relative;
-    .myList,.hotList{
+    .myList,.dayList{
       width: 96%;
       .menuTitle{
         display:inline-block;
