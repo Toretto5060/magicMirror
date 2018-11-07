@@ -31,6 +31,10 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+import {
+  userMusicUrl,
+  cheackMusicUrl
+} from './api/index.js';
 
 Vue.prototype.fuc = { //定义全局方法
   idGetIndex(id,list){
@@ -39,5 +43,29 @@ Vue.prototype.fuc = { //定义全局方法
         return i;
       }
     }
-  }
+  },
+  getMusicUrl(music_id) { //检查歌曲是否可播放并获取歌曲播放地址
+    let that = this;
+    let getId = {
+      id: music_id
+    }
+    cheackMusicUrl(getId).then(res => {
+      if (res.success == true) {
+        userMusicUrl(getId).then(res => {
+          if (res.code == 200) {
+            store.state.musicId = music_id;
+            store.state.musicUrl = res.data[0].url;
+            let thisData = store.state.musicList[that.idGetIndex(store.state.musicId, store.state.musicList)];
+            if (thisData.al != undefined) {
+              store.state.musicPic = thisData.al.picUrl;
+            }else{
+              store.state.musicPic = thisData.album.picUrl;
+            }
+          }
+        })
+      } else {
+        return;
+      }
+    })
+  },
 }

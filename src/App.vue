@@ -216,23 +216,28 @@ export default {
       if(audio!==null && that.musicUrl != ''){             
           audio.pause();
           that.playIcon = "iconfont icon-play";
+          that.$store.state.musicPlay='false';
           that.$store.state.musicPic='';
           that.$store.state.musicUrl='';
-          that.$store.state.musicPlay='false';
+          that.$store.state.musicList=[];
           that.$store.state.buttonShow=false;
       }
     },
     prev(){
       let that= this;
       let index = that.fuc.idGetIndex(that.$store.state.musicId,that.$store.state.musicList);
-      if(index != 0){
+      if(index > 0){
         that.$store.state.musicId = that.$store.state.musicList[index-1].id;
-        let getMusicPic=that.$store.state.musicList[index].al ? that.$store.state.musicList[index].al.picUrl :  that.$store.state.musicList[index].album.picUrl
-        getMusicUrl(that.$store.state.musicId,getMusicPic);
+        that.fuc.getMusicUrl(that.$store.state.musicId);
       }
     },
     next(){
-
+      let that= this;
+      let index = that.fuc.idGetIndex(that.$store.state.musicId,that.$store.state.musicList);
+      if(index != that.$store.state.musicList.length-1){
+        that.$store.state.musicId = that.$store.state.musicList[index+1].id;
+        that.fuc.getMusicUrl(that.$store.state.musicId);
+      }
     }
 
 

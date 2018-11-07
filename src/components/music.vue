@@ -25,7 +25,7 @@
             </ul>
             <ul v-if="musicDetails" v-loading="isLoad"
               element-loading-background="rgba(0, 0, 0, 0)">
-              <li  v-for="list in musicMuneDetails" @click="getMusicUrl(list.id,list.pic)">
+              <li  v-for="list in musicMuneDetails" @click="fuc.getMusicUrl(list.id)">
                 <span class="pic">
                   <img v-lazy="list.pic"  alt="">
                 </span>
@@ -42,7 +42,7 @@
           <div class="dayList">
             <span class="menuTitle">每日推荐</span>
             <ul>
-              <li  v-for="list in dayList" @click="getMusicUrl(list.id,list.pic)">
+              <li  v-for="list in dayList" @click="fuc.getMusicUrl(list.id)">
                 <span class="pic">
                   <img v-lazy="list.pic" alt="">
                 </span>
@@ -225,38 +225,6 @@ export default {
        
       })
     },
-    getMusicUrl(music_id,music_pic){   //检查歌曲是否可播放并获取歌曲播放地址
-      let that = this;
-      let getId ={
-        id:music_id
-      }
-    cheackMusicUrl(getId).then(res=>{
-      if(res.success == true){
-        userMusicUrl(getId).then(res=>{
-          if(res.code == 200){
-            that.$store.state.musicPic = music_pic;
-            that.$store.state.musicId = music_id;
-            that.$store.state.musicUrl = res.data[0].url;
-          }
-        })
-      }else{
-        return;
-      }
-    })
-    },
-    on(){
-      // if(!audio.play){
-      //   var audio = document.getElementById('music1');
-      //   audio.play();
-      // }
-    },
-    off(){
-      // var audio = document.getElementById('music1');
-      // // if(!audio.pause){
-      //   audio.pause();
-      // }
-    }
-  
   }
 }
 </script>
