@@ -25,7 +25,7 @@
             </ul>
             <ul v-if="musicDetails" v-loading="isLoad"
               element-loading-background="rgba(0, 0, 0, 0)">
-              <li  v-for="list in musicMuneDetails" @click="fuc.getMusicUrl(list.id)">
+              <li  v-for="list in musicMuneDetails" @click="fuc.getMusicUrl(list.id,list.datas)">
                 <span class="pic">
                   <img v-lazy="list.pic"  alt="">
                 </span>
@@ -42,7 +42,7 @@
           <div class="dayList">
             <span class="menuTitle">每日推荐</span>
             <ul>
-              <li  v-for="list in dayList" @click="fuc.getMusicUrl(list.id)">
+              <li  v-for="list in dayList" @click="fuc.getMusicUrl(list.id,list.datas)">
                 <span class="pic">
                   <img v-lazy="list.pic" alt="">
                 </span>
@@ -172,7 +172,6 @@ export default {
       that.isLoad = true;
       userMusicDetails(params).then(res=>{
         if(res.code == 200){
-          that.$store.state.musicList = res.playlist.tracks   //设置当前播放列表数组
           that.isLoad = false;
           that.myTitle=res.playlist.name;
           for(let i=0;i<res.playlist.tracks.length;i++){  
@@ -180,12 +179,14 @@ export default {
               id:'',
               pic:'',
               title:'',
-              num:''
+              num:'',
+              datas:[]
             }
             data.id=res.playlist.tracks[i].id;
             data.pic=res.playlist.tracks[i].al.picUrl;
             data.title=res.playlist.tracks[i].name;
             data.num=res.playlist.tracks[i].ar[0].name;
+            data.datas = res.playlist.tracks   //设置当前播放列表数组
             that.musicMuneDetails.push(data);
           }     
         }else{
@@ -205,20 +206,21 @@ export default {
       let that = this;
       dayMusic().then(res=>{
         if(res.code == 200){
-          that.$store.state.musicList = res.recommend;   // 设置当前播放列表数组
           that.dayList=[];
           for(let i=0;i<20;i++){  
           var data={
             id:'',
             pic:'',
             title:'',
-            num:''
+            num:'',
+            datas:[] 
           }
           data.id=res.recommend[i].id;
           data.pic=res.recommend[i].album.picUrl
           data.title=res.recommend[i].name
           data.num=res.recommend[i].artists[0].name
           // +"("+res.recommend[i].reason+")"
+          data.datas = res.recommend;   // 设置当前播放列表数组
           that.dayList.push(data) 
         }
       }

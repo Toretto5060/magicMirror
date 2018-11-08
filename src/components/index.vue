@@ -81,6 +81,7 @@ export default {
   data () {
     return {
       times:{
+        timers:null,
         YTD:'----年--月--日',
         yearsType:'',
         lunarYTD:'',
@@ -149,6 +150,10 @@ export default {
     this.setData();
     this.getWeather();
     this.setWeather();
+  },
+  beforeDestroy() {
+    clearInterval(this.timers);        
+    this.timers = null;
   },
   methods:{
     getData(){  //获取时间
@@ -329,7 +334,7 @@ export default {
     },
     setData(){
       let that = this;
-      setInterval(function () {
+      this.timers=setInterval(function () {
         that.getData();
       },1000)
     },
@@ -447,8 +452,9 @@ export default {
 
 
       }
-    }
-  }
+    },
+  },
+
 }
 </script>
 

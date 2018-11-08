@@ -37,6 +37,14 @@
       <div class="close" @click="closeMusic">
         <i class="iconfont icon-logout"></i>
       </div>
+      <span class="titName">{{musicDetail.name}}</span>
+      <span class='author'>{{musicDetail.author}}</span>
+      <span class='lang'>{{musicDetail.lang}}</span>
+      <span class='line'>
+        <span class="highLine" :style="'width:'+bar+'%'"></span>
+      </span>
+      <span class='nowLang'>{{musicDetail.nowLang}}</span>
+
       <div class=" polish"></div>
       <div class="prev" @click="prev">
         <i class="iconfont icon-yduishangyiqu"></i>
@@ -47,6 +55,7 @@
        <div class="next" @click="next">
         <i class="iconfont icon-yduixiayiqu"></i>
       </div>
+      <div class="fill"></div>
     </div>
 
   </div>
@@ -58,10 +67,18 @@ export default {
   data(){
     return {
       // backc:encodeURI('http://p2.music.126.net/tt8xwK-ASC2iqXNUXYKoDQ==/109951163606377163.jpg'),
+      bar:'0',
       backc:'',
+      timer:null,
       isShow:true,
       Welcomes:"",
       Starting:"",
+      musicDetail:{
+        name:'--',
+        author:'--',
+        lang:'00:00',
+        nowLang:'00:00'
+      },
       system:{
         wifi:"",
         batteryNums:"0%",
@@ -83,18 +100,55 @@ export default {
     //   this.backc = this.$store.state.musicPic
     // },
     '$store.state.musicUrl'(){
-      this.butShow = this.$store.state.buttonShow;
-      this.musicUrl = this.$store.state.musicUrl;
-      this.backc = this.$store.state.musicPic;      
+      let that = this;
+      that.bar=0;
+
+      that.musicDetail.name =  that.$store.state.songInfo.name //当前播放歌曲名字
+      that.musicDetail.author =  that.$store.state.songInfo.author //当前播放歌曲名作者
+      that.butShow = that.$store.state.buttonShow; //播放组件是否显示
+      that.musicUrl = that.$store.state.musicUrl;  //音乐播放地址
+      that.backc = that.$store.state.musicPic;     //音乐背景图
+
+
+      if(that.$store.state.musicUrl != ''){
+        var audio = document.getElementById('music1'); 
+          this.timer=setInterval(function () {
+            if(that.fuc.MillisecondToDate((audio.currentTime*1000)) != '' && that.fuc.MillisecondToDate((audio.duration*1000)) != ''){
+              that.$store.state.songInfo.nowLang = (audio.currentTime*1000)//当前播放时间
+              that.musicDetail.nowLang = that.fuc.MillisecondToDate(that.$store.state.songInfo.nowLang)
+              that.$store.state.songInfo.lang = (audio.duration*1000) //总长度
+              that.musicDetail.lang = that.fuc.MillisecondToDate(that.$store.state.songInfo.lang)     
+            }else{
+              that.musicDetail.nowLang="00:00"
+              that.musicDetail.lang = '00:00'
+            }
+          },100)
+       
+      }else{
+        clearInterval(this.timer);
+      }
       this.playMusic();
     },
     '$store.state.buttonShow'(){
       this.butShow = this.$store.state.buttonShow;
+    },
+    '$store.state.songInfo.nowLang'(){
+      let that = this;
+      //进度条 = 当前播放秒数 / (总秒数/100) + "%"
+      that.bar = ((that.$store.state.songInfo.nowLang)/1000)/(((that.$store.state.songInfo.lang) / 1000)/100);
+      if(that.$store.state.songInfo.nowLang == that.$store.state.songInfo.lang){
+        that.next();
+      }
     }
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);        
+    this.timer = null;
   },
   mounted() {
     // this.getSystem();
     // this.setSystem();
+    clearInterval(this.timer);
     if(localStorage.getItem("msg")){
       
     }else{
@@ -223,7 +277,7 @@ export default {
           that.$store.state.buttonShow=false;
       }
     },
-    prev(){
+    prev(){   
       let that= this;
       let index = that.fuc.idGetIndex(that.$store.state.musicId,that.$store.state.musicList);
       if(index > 0){
@@ -237,10 +291,13 @@ export default {
       if(index != that.$store.state.musicList.length-1){
         that.$store.state.musicId = that.$store.state.musicList[index+1].id;
         that.fuc.getMusicUrl(that.$store.state.musicId);
+      }else{
+        that.$store.state.musicId = that.$store.state.musicList[0].id;
+        that.fuc.getMusicUrl(that.$store.state.musicId);
       }
+
+
     }
-
-
   }
 }
 </script>
@@ -388,12 +445,51 @@ body{
     width: 3.33rem;
     height: 1.48rem;
     position: absolute;
-    bottom:1.85rem;
+    // bottom:6.85rem;
     left: .42rem;
-    z-index: 999999999;
+    // z-index: 999999999;
     color: #fff;
     background-color: rgba(255,255,255,.2);
-   
+    span{
+      display: inline-block;
+      z-index: -9999;
+      margin-top: .1rem;
+      white-space: nowrap;
+      text-overflow:ellipsis;
+      overflow:hidden;
+    }
+    .titName{
+      margin-left:.09rem;
+      width: 1.5rem;
+    }
+    .author{
+      width: 1.2rem;
+      color: #999;
+    }
+    .lang{
+      float: right;
+      font-size:.22rem; 
+      margin-right: .09rem;
+      margin-top: .05rem;
+    }
+    .line{
+      width:1.7rem;
+      height: .04rem;
+      background-color: #999;
+      margin-left: .15rem;
+      .highLine{
+        float: left;
+        height: .04rem;
+        background-color: pink;
+        margin-top: 0rem;
+      }
+    }
+    .nowLang{
+      float: left;
+      font-size:.22rem; 
+      margin-left: .09rem;
+      margin-top: .05rem;
+    }
     .close{
       width: .46rem;
       height: .46rem;
@@ -405,22 +501,6 @@ body{
         font-size: .37rem;
       }
     }
-    // .polish{
-    //   width: 3.33rem;
-    //   height: 1.48rem;
-    //   position: absolute;
-    //   top: 0;
-    //   z-index: -999999;
-    //   background-color: rgba(255,255,255,.2);
-
-    //   background-repeat:no-repeat;
-    //   background-size: cover;
-    //   -webkit-filter: blur(1px);
-    //   -moz-filter: blur(1px);
-    //   -o-filter: blur(1px);
-    //   -ms-filter: blur(1px);
-    //   filter: blur(1px);
-    // }
     div{
       width: 1.11rem;
       position: absolute;
