@@ -7,6 +7,7 @@ export default new Vuex.Store({
 
   },
   state: {
+    isShowBkg:true,
     songInfo:{
       name:'',     //当前歌曲名称
       author:'',   //演唱者

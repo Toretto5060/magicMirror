@@ -4,6 +4,21 @@
       <div class="esc" @click="goUp">
           <i class="iconfont icon-fanhui"></i>
       </div>
+      <el-checkbox @change="changeSelect" class="select" v-model="checked">{{selectTitle}}</el-checkbox>
+       <div class="container" @click="isPlaydetail">
+        <span :class = "playMusic">
+          <div id = "progressFill"></div>
+        </span>
+        <span :class = "playMusic">
+          <div id="progressFill2"></div>
+        </span>
+        <span :class = "playMusic">
+          <div id="progressFill3"></div>
+        </span>
+        <span :class = "playMusic">
+          <div id="progressFill4"></div>
+        </span>
+      </div>  
     </div>
 
     <div class="songList">
@@ -25,7 +40,7 @@
             </ul>
             <ul v-if="musicDetails" v-loading="isLoad"
               element-loading-background="rgba(0, 0, 0, 0)">
-              <li  v-for="list in musicMuneDetails" @click="fuc.getMusicUrl(list.id,list.datas)">
+              <li  v-for="list in musicMuneDetails" @click="fuc.getMusicUrl(list.id,list.datas),goTodetil()">
                 <span class="pic">
                   <img v-lazy="list.pic"  alt="">
                 </span>
@@ -42,7 +57,7 @@
           <div class="dayList">
             <span class="menuTitle">每日推荐</span>
             <ul>
-              <li  v-for="list in dayList" @click="fuc.getMusicUrl(list.id,list.datas)">
+              <li  v-for="list in dayList" @click="fuc.getMusicUrl(list.id,list.datas),goTodetil()">
                 <span class="pic">
                   <img v-lazy="list.pic" alt="">
                 </span>
@@ -70,7 +85,11 @@ export default {
   name: 'music',
   data(){
     return {
+      checked: '',
+      selectTitle:'使用背景',
+      playMusic:'progressStaticBar',
       myTitle:'我的歌单',
+      playMusicNow:'',
       myMenuIs:true,
       songList:[{
         id:'',
@@ -95,11 +114,16 @@ export default {
     }
   },
   watch:{
-  
+    '$store.state.songInfo.nowLang'(){
+      let that = this;
+      that.playMusic = "progressBar"
+    }
   },
   mounted() {
-    this.$store.state.buttonShow = false;
-    this.getUserId();
+    let that = this;
+    that.$store.state.buttonShow = false;
+    that.getUserId();
+    that.checked = that.$store.state.isShowBkg
   },
   methods:{
     goUp(){
@@ -108,6 +132,23 @@ export default {
       if(that.$store.state.musicUrl != ''){
         that.$store.state.buttonShow = true;
       }
+    },
+    goTodetil(){
+      this.$router.push({path:'/musicDetail'})
+    },
+    isPlaydetail(){
+      let that = this;
+      if(that.playMusic == "progressBar" || that.$store.state.musicUrl != ''){
+        this.$router.push({path:'/musicDetail'})
+      }
+    },
+    changeSelect(){
+      let that = this;
+      if(that.checked== false){
+      that.$store.state.isShowBkg=false;
+      }else{
+        that.$store.state.isShowBkg=true
+        }
     },
     getUserId(){  //登录
       let that = this;
@@ -241,7 +282,7 @@ export default {
   padding-top: .74rem;
   color: #fff;
   .top{
-    width: 80%;
+    width: 90%;
     height: .56rem;
     position: absolute;
     top: .42rem;
@@ -259,6 +300,112 @@ export default {
         text-decoration : none;
       }
      
+    }
+    .select{
+      position: absolute;
+      top: .14rem;
+      right: .56rem;
+    }
+    .select:before{
+      color: red;
+    }
+    .container{
+      width: 30px;
+      position: absolute;
+      top: -.04rem;
+      right: -.37rem;
+      transform:rotate(-90deg);
+      -ms-transform:rotate(-90deg); /* IE 9 */
+      -moz-transform:rotate(-90deg); /* Firefox */
+      -webkit-transform:rotate(-90deg); /* Safari 和 Chrome */
+      -o-transform:rotate(-90deg); /* Opera */
+      .progressBar{
+        display:block;
+        margin-top:3px;
+        width: 81%;
+        height: 2px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        margin-right: 1%;
+        #progressFill,#progressFill2,#progressFill3,#progressFill4 {
+          width:0%;
+          height:2px;
+          background:pink;
+          position:relative;
+        }
+        #progressFill{
+          animation:first .8s 0s infinite;
+          animation:first .8s 0s infinite;
+          -moz-animation:first .8s 0s infinite;
+          -webkit-animation:first .8s 0s infinite;
+          -o-animation:first .8s 0s infinite;
+        }
+        #progressFill2{
+          animation:second .6s 0s infinite;
+          animation:second .6s 0s infinite;
+          -moz-animation:second .6s 0s infinite;
+          -webkit-animation:second .6s 0s infinite;
+          -o-animation:second .6s 0s infinite;
+        }
+        #progressFill3{
+          animation:third .4s 0s infinite;
+          animation:third .4s 0s infinite;
+          -moz-animation:third .4s 0s infinite;
+          -webkit-animation:third .4s 0s infinite;
+          -o-animation:third .4s 0s infinite;
+        }
+        #progressFill4{
+          animation:fourth .5s 0s infinite;
+          animation:fourth .5s 0s infinite;
+          -moz-animation:fourth .5s 0s infinite;
+          -webkit-animation:fourth .5s 0s infinite;
+          -o-animation:fourth .5s 0s infinite;
+        }
+        @keyframes first{
+          50%{width: 30%}
+          100%{width: 0%}
+        }
+        @keyframes second{
+          50%{width: 60%}
+          100%{width: 0%}
+        }
+        @keyframes third{
+          50%{width: 40%}
+          100%{width: 0%}
+        }
+        @keyframes fourth{
+          50%{width: 75%}
+          100%{width: 0%}
+        }
+      }
+      .progressStaticBar{
+        display:block;
+        margin-top:3px;
+        width: 81%;
+        height: 2px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        #progressFill,#progressFill2,#progressFill3,#progressFill4 {
+          width:0%;
+          height:2px;
+          background:pink;
+          position:relative;
+        }
+        #progressFill{
+          width:30%;
+        }
+        #progressFill2{
+          width:75%;
+        }
+        #progressFill3{
+          width:90%;
+        }
+        #progressFill4{
+          width:40%;
+        }
+      }
     }
   }
 

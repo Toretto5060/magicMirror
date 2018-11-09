@@ -107,9 +107,11 @@ export default {
       that.musicDetail.author =  that.$store.state.songInfo.author //当前播放歌曲名作者
       that.butShow = that.$store.state.buttonShow; //播放组件是否显示
       that.musicUrl = that.$store.state.musicUrl;  //音乐播放地址
-      that.backc = that.$store.state.musicPic;     //音乐背景图
-
-
+      if(that.$store.state.isShowBkg == true){
+        that.backc = that.$store.state.musicPic;     //音乐背景图
+      }else{
+        that.backc = ''
+      }
       if(that.$store.state.musicUrl != ''){
         var audio = document.getElementById('music1'); 
           this.timer=setInterval(function () {
@@ -138,6 +140,14 @@ export default {
       that.bar = ((that.$store.state.songInfo.nowLang)/1000)/(((that.$store.state.songInfo.lang) / 1000)/100);
       if(that.$store.state.songInfo.nowLang == that.$store.state.songInfo.lang){
         that.next();
+      }
+    },
+    '$store.state.isShowBkg'(){
+      let that = this;
+      if(that.$store.state.isShowBkg == true){
+        that.backc = that.$store.state.musicPic;
+      }else{
+        that.backc = '';
       }
     }
   },
