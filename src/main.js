@@ -48,6 +48,7 @@ Vue.prototype.fuc = { //定义全局方法
     if (music_list) {
       store.state.musicList = music_list //设置当前播放列表数组
     }
+
     let that = this;
     let getId = {
       id: music_id

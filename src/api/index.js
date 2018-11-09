@@ -40,4 +40,10 @@ export const cheackMusicUrl = params => { //查询歌曲是否可播放 返回su
   return axiosIns.get(host +'/check/music', {params: params})
 }
 
+export const musicLyric = params => { //查询歌曲是否可播放 返回success
+  return axiosIns.get(host + '/lyric', {
+    params: params
+  })
+}
+
 
